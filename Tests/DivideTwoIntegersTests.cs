@@ -28,7 +28,8 @@ namespace LeetCode.Tests
 		[InlineData(2147483647, -1, -2147483647)]
 		[InlineData(int.MinValue + 1, int.MinValue, 0)]
 		[InlineData(1623447558, 1893170224, 0)]
-		[InlineData(-485247160 , 398425835,-1)]
+		[InlineData(-485247160, 398425835, -1)]
+		[InlineData(int.MinValue, int.MinValue >> 1, 2)]
 		public void DivideLimitTests(int dividend, int divisor, int expected)
 		{
 			Assert.Equal(expected, new DivideTwoIntegers().Divide(dividend, divisor));

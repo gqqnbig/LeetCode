@@ -11,7 +11,15 @@ namespace LeetCode
 	{
 		public static void Main(string[] args)
 		{
-			Console.WriteLine(-1 << 2);
+			Console.WriteLine(int.MinValue);
+			Console.WriteLine(int.MinValue >> 2);
+			int v = -536870912;
+			Console.WriteLine(v << 2);
+			//Console.WriteLine(int.MinValue >> 2);
+
+			Console.WriteLine("int.MinValue: " + Convert.ToString(int.MinValue, 2));
+
+			Console.WriteLine("int.MinValue >> 1: " + Convert.ToString(int.MinValue >> 1, 2));
 			Console.ReadKey();
 		}
 	}

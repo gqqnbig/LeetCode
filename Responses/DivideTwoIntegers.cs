@@ -11,11 +11,11 @@ namespace LeetCode
 	{
 		public int Divide(int dividend, int divisor)
 		{
-			//特殊情形
-			if (divisor == 1)
-				return dividend;
-			if (divisor == -1)
-				return NegatePossibleOverflow(dividend);
+			////特殊情形
+			//if (divisor == 1)
+			//	return dividend;
+			//if (divisor == -1)
+			//	return NegatePossibleOverflow(dividend);
 
 
 			//负数部分范围比较大，所以除数和被除数都转到负数进行处理
@@ -52,10 +52,30 @@ namespace LeetCode
 
 			//也把商转到负数进行处理
 			int quotient = 0;
+
+
+			//      int.MinValue: 10000000000000000000000000000000
+			// int.MinValue >> 1: 11000000000000000000000000000000
 			while (dividend <= divisor)
 			{
-				dividend -= divisor;
-				quotient--;
+				//放大除数
+				int doubledDivisor = divisor;
+				int amplifications = -1;
+				while (true)
+				{
+					//防止溢出
+					if (int.MinValue >> 1 <= doubledDivisor && dividend <= (doubledDivisor << 1))
+					{
+						doubledDivisor <<= 1;
+						amplifications <<= 1;
+					}
+					else
+					{
+						dividend -= doubledDivisor;
+						quotient += amplifications;
+						break;
+					}
+				}
 			}
 
 			return quotient;
