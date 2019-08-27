@@ -65,6 +65,7 @@
     <Compile Include="DivideTwoIntegersTests.cs" />
     <Compile Include="MaxPointsOnALineTests.cs" />
     <Compile Include="StringToIntegerTests.cs" />
+    <Compile Include="UnitTest1.cs" />
     <Compile Include="ValidNumberTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

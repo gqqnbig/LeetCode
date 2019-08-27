@@ -48,6 +48,7 @@
     <Compile Include="MaxPointsOnALine.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="StringToInteger.cs" />
+    <Compile Include="StrongPasswordChecker.cs" />
     <Compile Include="ValidNumber.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
