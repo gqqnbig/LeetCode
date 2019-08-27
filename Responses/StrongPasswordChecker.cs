@@ -59,12 +59,14 @@ namespace LeetCode
 				//找到长度为3的倍数的重复组，删除一个字后可少修改1次。
 				for (int i = 0; i < sortedLength.Count && freeDeletion > 0; i++)
 				{
-					if (sortedLength[i] / 3 * 3 == sortedLength[i])
+					if (sortedLength[i] % 3 == 0)
 					{
-						sortedLength[i] -= 1;
+						sortedLength[i]--;
 						freeDeletion--;
 					}
 				}
+				//如果freeDeletion足够多，上面循环一遍整个数组，则下面条件成立。
+				//Debug.Assert(sortedLength.All(v => v != 3));
 
 				//把剩余的freeDeletion分配给长度大于5的组。长度为5的组可通过modify断开。
 				for (int i = 0; i < sortedLength.Count && freeDeletion > 0; i++)
@@ -76,7 +78,6 @@ namespace LeetCode
 					}
 				}
 
-				Debug.Assert(sortedLength.All(v => v != 3));
 				sortedLength = sortedLength.Where(v => v > 2).ToList();
 
 				if (freeDeletion > 0 && sortedLength.Count > 0)
@@ -97,7 +98,6 @@ namespace LeetCode
 			}
 
 
-			//repeatingGroupIndex指向尚未处理的字符组，现在需要使用modify
 			int toModify = sortedLength.Select(v => v / 3).Sum();
 			int toAdd = AddCharacters(s, toModify);
 
