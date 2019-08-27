@@ -27,42 +27,11 @@ namespace LeetCode.Tests
 		[InlineData(9, "a00abb0Aa0A0aa0abA0bAb00cca0b")]
 		[InlineData(9, "aaaaaaaa11aAa1a1aaaa1aaa1aaa")]
 		[InlineData(11, "aaaaaaaa11aAa1a1aaaa1aaa1aaaCDE")]
+		[InlineData(3, "aaaaabbbb1234567890ABA")]
 		public void StrongPasswordCheckerTest(int modifications, string password)
 		{
 			output.WriteLine(modifications.ToString());
 			Assert.Equal(modifications, new CStrongPasswordChecker().StrongPasswordChecker(password));
-		}
-
-		[Theory]
-		[InlineData(0, "1234")]
-		[InlineData(0, "")]
-		[InlineData(0, "a")]
-		[InlineData(0, "aa")]
-		[InlineData(1, "aaa")]
-		[InlineData(1, "aaaa")]
-		[InlineData(1, "aaaaa")]
-		[InlineData(2, "aaaaaa")]
-		[InlineData(2, "aaa1bbb")]
-		public void ModifyToBreakTest(int modifications, string password)
-		{
-			Assert.Equal(modifications, new CStrongPasswordChecker().ModifyToBreak(password));
-
-		}
-
-		[Theory]
-		[InlineData(0, "1234")]
-		[InlineData(0, "")]
-		[InlineData(0, "a")]
-		[InlineData(0, "aa")]
-		[InlineData(1, "aaa")]
-		[InlineData(2, "aaaa")]
-		[InlineData(3, "aaaaa")]
-		[InlineData(4, "aaaaaa")]
-		[InlineData(2, "aaa1bbb")]
-		public void RemoveToBreakTest(int modifications, string password)
-		{
-			Assert.Equal(modifications, new CStrongPasswordChecker().RemoveToBreak(password));
-
 		}
 
 		[Fact]
