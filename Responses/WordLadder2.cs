@@ -145,6 +145,7 @@ namespace LeetCode
 			return hasDifference;
 		}
 
+		[DebuggerDisplay("Word={Word}, d={DifferenceFromSolution}")]
 		class Problem
 		{
 			public string Word { get; set; }
