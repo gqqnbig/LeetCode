@@ -71,6 +71,9 @@ namespace LeetCode
 					usedTransformLimit = problem.UsedTransform;
 				}
 
+				Debug.Assert(problem.UsedTransform <= usedTransformLimit);
+				if (problem.UsedTransform == usedTransformLimit)
+					continue;
 
 				if (expansionMap.TryGetValue(problem.Word, out var nextWords) == false)
 				{
@@ -83,18 +86,15 @@ namespace LeetCode
 				foreach (var w in nextWords)
 				{
 					var p = new Problem(w.Word, w.DifferenceFromSolution, problem);
-					if (p.UsedTransform <= usedTransformLimit)
+					if (minTransformToWord.TryGetValue(p.Word, out int v) == false || v >= p.UsedTransform)
 					{
-						if (minTransformToWord.TryGetValue(p.Word, out int v) == false || v >= p.UsedTransform)
-						{
-							queue.Enqueue(p, p.Heuristic);
-							minTransformToWord[p.Word] = p.UsedTransform;
-						}
-#if DEBUG
-						else
-							Console.WriteLine($"用了{p.UsedTransform}步扩展到{p.Word}，但其他路径只需要{minTransformToWord[p.Word]}步。");
-#endif
+						queue.Enqueue(p, p.Heuristic);
+						minTransformToWord[p.Word] = p.UsedTransform;
 					}
+#if DEBUG
+					else
+						Console.WriteLine($"用了{p.UsedTransform}步扩展到{p.Word}，但其他路径只需要{minTransformToWord[p.Word]}步。");
+#endif
 				}
 			}
 			//Debug.Assert(shortestTransformations == null || shortestTransformations[0].Count - 1 <= usedTransformLimit); //强制搜索层数限制
