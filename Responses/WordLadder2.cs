@@ -11,7 +11,9 @@ namespace LeetCode
 	{
 		public IList<IList<string>> FindLadders(string beginWord, string endWord, IList<string> wordList)
 		{
-			var transforms = FindLadders(beginWord, endWord, new LinkedList<string>(wordList), wordList.Count);
+			var transforms = FindLadders(new Problem { Word = beginWord, DifferenceFromSolution = GetDifferences(beginWord, endWord) }, endWord,
+										 new LinkedList<Problem>(wordList.Select(w => new Problem { Word = w, DifferenceFromSolution = GetDifferences(w, endWord) })),
+										 wordList.Count);
 			//如果找不到解，按规定返回空列表
 			if (transforms == null)
 				return new List<IList<string>>();
@@ -36,10 +38,10 @@ namespace LeetCode
 		/// <param name="wordList"></param>
 		/// <param name="expandLimit">还能对beginWord变形几次</param>
 		/// <returns></returns>
-		internal List<LinkedList<string>> FindLadders(string beginWord, string endWord, LinkedList<string> wordList, int expandLimit)
+		List<LinkedList<string>> FindLadders(Problem beginWord, string endWord, LinkedList<Problem> wordList, int expandLimit)
 		{
 			Debug.Assert(expandLimit >= 0);
-			if (beginWord == endWord)
+			if (beginWord.Word == endWord)
 			{
 				var r = new List<LinkedList<string>>();
 				r.Add(new LinkedList<string>());
@@ -50,23 +52,22 @@ namespace LeetCode
 				return null;
 			Debug.Assert(wordList.Count > 0);
 
-			var nextWords = wordList.Where(w => IsDifference1(w, beginWord)).ToList();
+			//var nextWords = wordList.Where(w => IsDifference1(w, beginWord)).ToList();
 			List<LinkedList<string>> shortestTransformations = null;
 
-			LinkedListNode<string> node = wordList.First;
+			var node = wordList.First;
 			while (node != null)
 			{
-				if (IsDifference1(node.Value, beginWord) == false)
+				if (IsDifference1(node.Value.Word, beginWord.Word) == false || node.Value.DifferenceFromSolution > beginWord.DifferenceFromSolution)
 				{
 					node = node.Next;
 					continue;
 				}
 
-				string word = node.Value;
 				var next = node.Next;
 				Debug.Assert(next == null || next.List != null);
 				wordList.Remove(node);
-				var transformations = FindLadders(word, endWord, wordList, expandLimit - 1);
+				var transformations = FindLadders(node.Value, endWord, wordList, expandLimit - 1);
 				if (next == null)
 					wordList.AddLast(node);
 				else
@@ -80,7 +81,7 @@ namespace LeetCode
 				{
 					//找到了解
 					foreach (var t in transformations)
-						t.AddFirst(word);
+						t.AddFirst(node.Value.Word);
 					//transformations里面每个transformation的长度都必须相同。
 					Debug.Assert(transformations.Skip(1).All(t => t.Count == transformations[0].Count));
 					if (shortestTransformations == null || transformations[0].Count < shortestTransformations[0].Count)
@@ -124,6 +125,31 @@ namespace LeetCode
 			}
 
 			return hasDifference;
+		}
+
+		int GetDifferences(string w1, string w2)
+		{
+			Debug.Assert(w1.Length == w2.Length);
+
+			//对特殊情况进行优化
+			if (w1 == w2)
+				return 0;
+
+			int hasDifference = 0;
+			for (int i = 0; i < w1.Length; i++)
+			{
+				if (w1[i] != w2[i])
+					hasDifference++;
+			}
+
+			return hasDifference;
+		}
+
+		class Problem
+		{
+			public string Word { get; set; }
+
+			public int DifferenceFromSolution { get; set; }
 		}
 	}
 }
