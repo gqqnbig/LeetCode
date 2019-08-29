@@ -29,6 +29,7 @@ namespace LeetCode.Tests
 		[InlineData(11, "aaaaaaaa11aAa1a1aaaa1aaa1aaaCDE")]
 		[InlineData(3, "aaaaabbbb1234567890ABA")]
 		[InlineData(6, "aaaaaaaaaaaa1aa111aaa")]
+		[InlineData(6, "111aaaa1aaa1aaaaa1aa1aaa")]
 		public void StrongPasswordCheckerTest(int modifications, string password)
 		{
 			output.WriteLine(modifications.ToString());

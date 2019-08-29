@@ -64,10 +64,12 @@
   <ItemGroup>
     <Compile Include="DivideTwoIntegersTests.cs" />
     <Compile Include="MaxPointsOnALineTests.cs" />
+    <Compile Include="ReverseWordsInAStringTests.cs" />
     <Compile Include="StringToIntegerTests.cs" />
     <Compile Include="CStrongPasswordCheckerTests.cs" />
     <Compile Include="ValidNumberTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WordLadder2Tests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Responses\Responses.csproj">

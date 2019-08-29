@@ -8,6 +8,8 @@ namespace LeetCode
 {
 	public class CStrongPasswordChecker
 	{
+		private static readonly Regex Regex = new Regex(@"(.)(\1){2,}");
+
 		/// <summary>
 		/// Return the minimum changes requires to make a password strong.
 		/// </summary>
@@ -36,7 +38,7 @@ namespace LeetCode
 
 		private static int CheckerTooShort(string s)
 		{
-			var sortedLength = FindRepeatingGroups(s).ToList();
+			var sortedLength = FindRepeatingGroups(s);
 			//通过插入字符打断连续字符
 			int toAdd = sortedLength.Select(v => (int)Math.Ceiling(v / 2.0) - 1).Sum();
 			toAdd += AddCharacters(s, toAdd);
@@ -51,51 +53,52 @@ namespace LeetCode
 		private static int CheckerTooLong(string s)
 		{
 			int toDelete = s.Length - 20; //要删除这么多字符
-			var sortedLength = FindRepeatingGroups(s).ToList();
+			LinkedList<int> sortedLength = new LinkedList<int>(FindRepeatingGroups(s));
 			//可以通过删除重复字符，即缩短密码，又断开连续字符
 			int freeDeletion = toDelete;
-			while (freeDeletion > 0 && sortedLength.Count > 0)
+			//找到长度为3的倍数的重复组，删除一个字后可少修改1次。
+
+			LinkedListNode<int> next = null;
+			for (var n = sortedLength.First; n != null && freeDeletion > 0; n = next)
 			{
-				//找到长度为3的倍数的重复组，删除一个字后可少修改1次。
-				for (int i = 0; i < sortedLength.Count && freeDeletion > 0; i++)
+				next = n.Next;
+				if (n.Value % 3 == 0)
 				{
-					if (sortedLength[i] % 3 == 0)
-					{
-						sortedLength[i]--;
-						freeDeletion--;
-					}
-				}
-				//如果freeDeletion足够多，上面循环一遍整个数组，则下面条件成立。
-				//Debug.Assert(sortedLength.All(v => v != 3));
-
-				//把剩余的freeDeletion分配给长度大于5的组。长度为5的组可通过modify断开。
-				for (int i = 0; i < sortedLength.Count && freeDeletion > 0; i++)
-				{
-					if (sortedLength[i] > 5)
-					{
-						sortedLength[i] -= 1;
-						freeDeletion--;
-					}
-				}
-
-				sortedLength = sortedLength.Where(v => v > 2).ToList();
-
-				if (freeDeletion > 0 && sortedLength.Count > 0)
-				{
-					int minIndex = 0;
-					int min = int.MaxValue;
-					for (int i = 0; i < sortedLength.Count; i++)
-					{
-						min = Math.Min(min, sortedLength[i]);
-						minIndex = i;
-					}
-
-					sortedLength[minIndex]--;
+					n.Value--;
 					freeDeletion--;
+					//if (n.Value == 2)
+					//	sortedLength.Remove(n);
 				}
-
-				Debug.Assert(sortedLength.All(v => v >= 2));
 			}
+			//如果freeDeletion足够多，上面循环一遍整个数组，则下面条件成立。
+			//Debug.Assert(sortedLength.All(v => v != 3));
+
+			for (var n = sortedLength.First; n != null && freeDeletion >= 2; n = next)
+			{
+				next = n.Next;
+				if (n.Value % 3 == 1)
+				{
+					//把4变成2，不用modify
+					//把7变成5，从2次modify变成1次
+					n.Value -= 2;
+					freeDeletion -= 2;
+
+					//if (n.Value == 2)
+					//	sortedLength.Remove(n);
+				}
+			}
+
+			for (var n = sortedLength.First; n != null && freeDeletion >= 3; n = n.Next)
+			{
+				if (n.Value >= 3)
+				{
+					int m = Math.Min(n.Value / 3, freeDeletion / 3);
+					n.Value -= 3 * m;
+					freeDeletion -= 3 * m;
+				}
+			}
+
+			//Debug.Assert(sortedLength.All(v => v >= 2));
 
 
 			int toModify = sortedLength.Select(v => v / 3).Sum();
@@ -143,8 +146,7 @@ namespace LeetCode
 
 		private static IEnumerable<int> FindRepeatingGroups(string s)
 		{
-			Regex repeatingCheck = new Regex(@"(.)(\1){2,}");
-			MatchCollection matchCollection = repeatingCheck.Matches(s);
+			MatchCollection matchCollection = Regex.Matches(s);
 			return from Match m in matchCollection
 				   select m.Value.Length;
 		}
