@@ -21,7 +21,7 @@ namespace LeetCode
 			else
 			{
 				var result = (from t in transforms
-							  select (IList<string>) t.ToList()).ToList();
+							  select (IList<string>)t.ToList()).ToList();
 				Debug.Assert(result.All(t => t[t.Count - 1] == endWord), "最后一个元素必须是endWord。");
 				Debug.Assert(result.All(t => t[0] == beginWord), "第一个元素必须是beginWord。");
 				return result;
@@ -77,13 +77,11 @@ namespace LeetCode
 						var p = new Problem(w.Word, w.DifferenceFromSolution, problem);
 						if (p.UsedTransform <= usedTransformLimit)
 						{
-							if (minTransformToWord.ContainsKey(p.Word) == false)
+							if (minTransformToWord.TryGetValue(p.Word, out int v) == false || v >= p.UsedTransform)
 							{
-								minTransformToWord.Add(p.Word, p.UsedTransform);
 								queue.Enqueue(p, p.Heuristic);
+								minTransformToWord[p.Word] = p.UsedTransform;
 							}
-							else if (minTransformToWord[p.Word] >= p.UsedTransform)
-								queue.Enqueue(p, p.Heuristic);
 #if DEBUG
 							else
 								Console.WriteLine($"用了{p.UsedTransform}步扩展到{p.Word}，但其他路径只需要{minTransformToWord[p.Word]}步。");
