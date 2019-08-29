@@ -72,7 +72,7 @@ namespace LeetCode
 
 				foreach (var w in wordList)
 				{
-					if (w.Word != problem.Parent?.Word && IsDifference1(w.Word, problem.Word))
+					if (IsDifference1(w.Word, problem.Word))
 					{
 						var p = new Problem(w.Word, w.DifferenceFromSolution, problem);
 						if (p.UsedTransform <= usedTransformLimit)
