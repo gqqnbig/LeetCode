@@ -44,6 +44,7 @@ namespace LeetCode
 			queue.Enqueue(beginWord, 0);
 			List<LinkedList<string>> shortestTransformations = new List<LinkedList<string>>();
 			Dictionary<string, int> minTransformToWord = new Dictionary<string, int>();
+			Dictionary<string, IList<Problem>> expansionMap = new Dictionary<string, IList<Problem>>(wordList.Count - 1 + 1);//-1表示减去endWord，+1表示加上beginWord
 			while (queue.Count > 0)
 			{
 				var problem = queue.Dequeue();
@@ -70,23 +71,29 @@ namespace LeetCode
 					usedTransformLimit = problem.UsedTransform;
 				}
 
-				foreach (var w in wordList)
+
+				if (expansionMap.TryGetValue(problem.Word, out var nextWords) == false)
 				{
-					if (IsDifference1(w.Word, problem.Word))
+					nextWords = (from w in wordList
+								 where IsDifference1(w.Word, problem.Word)
+								 select w).ToList();
+					expansionMap[problem.Word] = nextWords;
+				}
+
+				foreach (var w in nextWords)
+				{
+					var p = new Problem(w.Word, w.DifferenceFromSolution, problem);
+					if (p.UsedTransform <= usedTransformLimit)
 					{
-						var p = new Problem(w.Word, w.DifferenceFromSolution, problem);
-						if (p.UsedTransform <= usedTransformLimit)
+						if (minTransformToWord.TryGetValue(p.Word, out int v) == false || v >= p.UsedTransform)
 						{
-							if (minTransformToWord.TryGetValue(p.Word, out int v) == false || v >= p.UsedTransform)
-							{
-								queue.Enqueue(p, p.Heuristic);
-								minTransformToWord[p.Word] = p.UsedTransform;
-							}
-#if DEBUG
-							else
-								Console.WriteLine($"用了{p.UsedTransform}步扩展到{p.Word}，但其他路径只需要{minTransformToWord[p.Word]}步。");
-#endif
+							queue.Enqueue(p, p.Heuristic);
+							minTransformToWord[p.Word] = p.UsedTransform;
 						}
+#if DEBUG
+						else
+							Console.WriteLine($"用了{p.UsedTransform}步扩展到{p.Word}，但其他路径只需要{minTransformToWord[p.Word]}步。");
+#endif
 					}
 				}
 			}
