@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Priority_Queue;
 
 namespace LeetCode
 {
@@ -11,18 +10,18 @@ namespace LeetCode
 	{
 		public IList<IList<string>> FindLadders(string beginWord, string endWord, IList<string> wordList)
 		{
-			var transforms = FindLadders(new Problem { Word = beginWord, DifferenceFromSolution = GetDifferences(beginWord, endWord) }, endWord,
-										 new LinkedList<Problem>(wordList.Select(w => new Problem { Word = w, DifferenceFromSolution = GetDifferences(w, endWord) })),
+			var enhancedList = wordList.Select(w => new Problem(w, GetDifferences(w, endWord))).ToList();
+			var words = new List<Problem>(enhancedList);
+			var transforms = FindLadders(new Problem(beginWord, GetDifferences(beginWord, endWord)), endWord,
+										 words,
 										 wordList.Count);
 			//如果找不到解，按规定返回空列表
-			if (transforms == null)
+			if (transforms.Count == 0)
 				return new List<IList<string>>();
 			else
 			{
-				foreach (var t in transforms)
-					t.AddFirst(beginWord);
 				var result = (from t in transforms
-							  select (IList<string>)t.ToList()).ToList();
+							  select (IList<string>) t.ToList()).ToList();
 				Debug.Assert(result.All(t => t[t.Count - 1] == endWord), "最后一个元素必须是endWord。");
 				Debug.Assert(result.All(t => t[0] == beginWord), "第一个元素必须是beginWord。");
 				return result;
@@ -36,78 +35,71 @@ namespace LeetCode
 		/// <param name="beginWord"></param>
 		/// <param name="endWord"></param>
 		/// <param name="wordList"></param>
-		/// <param name="expandLimit">还能对beginWord变形几次</param>
+		/// <param name="usedTransformLimit">还能对beginWord变形几次</param>
 		/// <returns></returns>
-		List<LinkedList<string>> FindLadders(Problem beginWord, string endWord, LinkedList<Problem> wordList, int expandLimit)
+		List<LinkedList<string>> FindLadders(Problem beginWord, string endWord, IList<Problem> wordList, int usedTransformLimit)
 		{
-			Debug.Assert(expandLimit >= 0);
-			if (beginWord.Word == endWord)
+			Debug.Assert(usedTransformLimit >= 0);
+			SimplePriorityQueue<Problem, int> queue = new SimplePriorityQueue<Problem, int>();
+			queue.Enqueue(beginWord, 0);
+			List<LinkedList<string>> shortestTransformations = new List<LinkedList<string>>();
+			Dictionary<string, int> minTransformToWord = new Dictionary<string, int>();
+			while (queue.Count > 0)
 			{
-				var r = new List<LinkedList<string>>();
-				r.Add(new LinkedList<string>());
-				return r;
-			}
+				var problem = queue.Dequeue();
 
-			if (expandLimit == 0)
-				return null;
-			Debug.Assert(wordList.Count > 0);
 
-			//var nextWords = wordList.Where(w => IsDifference1(w, beginWord)).ToList();
-			List<LinkedList<string>> shortestTransformations = null;
-
-			var node = wordList.First;
-			while (node != null)
-			{
-				if (IsDifference1(node.Value.Word, beginWord.Word) == false || node.Value.DifferenceFromSolution > beginWord.DifferenceFromSolution)
+				//Console.WriteLine($"expandLimit={expandLimit}, DifferenceFromSolution={beginWord.DifferenceFromSolution}");
+				if (problem.Word == endWord)
 				{
-					node = node.Next;
-					continue;
-				}
-
-				var next = node.Next;
-				Debug.Assert(next == null || next.List != null);
-				wordList.Remove(node);
-				var transformations = FindLadders(node.Value, endWord, wordList, expandLimit - 1);
-				if (next == null)
-					wordList.AddLast(node);
-				else
-				{
-					Debug.Assert(next.List != null);
-					wordList.AddBefore(next, node);
-				}
-
-
-				if (transformations != null)
-				{
-					//找到了解
-					foreach (var t in transformations)
-						t.AddFirst(node.Value.Word);
-					//transformations里面每个transformation的长度都必须相同。
-					Debug.Assert(transformations.Skip(1).All(t => t.Count == transformations[0].Count));
-					if (shortestTransformations == null || transformations[0].Count < shortestTransformations[0].Count)
+					var transform = ChainTransform(problem);
+					if (shortestTransformations.Count == 0)
+						shortestTransformations.Add(transform);
+					else if (transform.Count < shortestTransformations[0].Count)
 					{
-						shortestTransformations = transformations;
-						Debug.Assert(shortestTransformations[0].Count <= expandLimit);
-						expandLimit = shortestTransformations[0].Count;
+						shortestTransformations.Clear();
+						shortestTransformations.Add(transform);
 					}
 					else
 					{
-						Debug.Assert(transformations[0].Count == shortestTransformations[0].Count);
-						shortestTransformations.AddRange(transformations);
+						Debug.Assert(transform.Count == shortestTransformations[0].Count);
+						shortestTransformations.Add(transform);
 					}
 
+					Debug.Assert(problem.UsedTransform <= usedTransformLimit);
+					usedTransformLimit = problem.UsedTransform;
 				}
 
-				node = next;
+				foreach (var w in wordList)
+				{
+					if (w.Word != problem.Parent?.Word && IsDifference1(w.Word, problem.Word))
+					{
+						var p = new Problem(w.Word, w.DifferenceFromSolution, problem);
+						if (p.UsedTransform <= usedTransformLimit)
+						{
+							if (minTransformToWord.ContainsKey(p.Word) == false)
+							{
+								minTransformToWord.Add(p.Word, p.UsedTransform);
+								queue.Enqueue(p, p.Heuristic);
+							}
+							else if (minTransformToWord[p.Word] >= p.UsedTransform)
+								queue.Enqueue(p, p.Heuristic);
+#if DEBUG
+							else
+								Console.WriteLine($"用了{p.UsedTransform}步扩展到{p.Word}，但其他路径只需要{minTransformToWord[p.Word]}步。");
+#endif
+						}
+					}
+				}
 			}
-			Debug.Assert(shortestTransformations == null || shortestTransformations[0].Count - 1 <= expandLimit); //强制搜索层数限制
+			//Debug.Assert(shortestTransformations == null || shortestTransformations[0].Count - 1 <= usedTransformLimit); //强制搜索层数限制
 			return shortestTransformations;
 		}
 
 		bool IsDifference1(string w1, string w2)
 		{
 			Debug.Assert(w1.Length == w2.Length);
-			
+
 			bool hasDifference = false;
 			for (int i = 0; i < w1.Length; i++)
 			{
@@ -141,12 +133,41 @@ namespace LeetCode
 			return hasDifference;
 		}
 
+		LinkedList<string> ChainTransform(Problem p)
+		{
+			var list = new LinkedList<string>();
+			while (p != null)
+			{
+				list.AddFirst(p.Word);
+				p = p.Parent;
+			}
+
+			return list;
+		}
+
 		[DebuggerDisplay("Word={Word}, d={DifferenceFromSolution}")]
 		class Problem
 		{
-			public string Word { get; set; }
+			public Problem(string word, int differenceFromSolution, Problem parent = null)
+			{
+				Word = word;
+				DifferenceFromSolution = differenceFromSolution;
+				Parent = parent;
+				if (parent != null)
+					UsedTransform = parent.UsedTransform + 1;
+			}
+			public string Word { get; }
 
-			public int DifferenceFromSolution { get; set; }
+			public int DifferenceFromSolution { get; }
+
+			/// <summary>
+			/// 从初始状态到达此状态已经使用的变换数量
+			/// </summary>
+			public int UsedTransform { get; }
+
+			public int Heuristic => DifferenceFromSolution + UsedTransform;
+
+			public Problem Parent { get; }
 		}
 	}
 }
