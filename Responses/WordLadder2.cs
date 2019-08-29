@@ -107,11 +107,7 @@ namespace LeetCode
 		bool IsDifference1(string w1, string w2)
 		{
 			Debug.Assert(w1.Length == w2.Length);
-
-			//对特殊情况进行优化
-			if (w1 == w2)
-				return false;
-
+			
 			bool hasDifference = false;
 			for (int i = 0; i < w1.Length; i++)
 			{
