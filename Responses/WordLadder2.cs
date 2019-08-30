@@ -43,29 +43,15 @@ namespace LeetCode
 			SimplePriorityQueue<Problem, int> queue = new SimplePriorityQueue<Problem, int>();
 			queue.Enqueue(beginWord, 0);
 			List<LinkedList<string>> shortestTransformations = new List<LinkedList<string>>();
-			//Dictionary<string, int> minTransformToWord = new Dictionary<string, int>();
 			var expansionMap = new Dictionary<string, Tuple<int, IList<Problem>>>(wordList.Count - 1 + 1);//-1表示减去endWord，+1表示加上beginWord
 			while (queue.Count > 0)
 			{
 				var problem = queue.Dequeue();
-
-
-				//Console.WriteLine($"expandLimit={expandLimit}, DifferenceFromSolution={beginWord.DifferenceFromSolution}");
 				if (problem.Word == endWord)
 				{
 					var transform = ChainTransform(problem);
-					if (shortestTransformations.Count == 0)
-						shortestTransformations.Add(transform);
-					else if (transform.Count < shortestTransformations[0].Count)
-					{
-						shortestTransformations.Clear();
-						shortestTransformations.Add(transform);
-					}
-					else
-					{
-						Debug.Assert(transform.Count == shortestTransformations[0].Count);
-						shortestTransformations.Add(transform);
-					}
+					Debug.Assert(shortestTransformations.Count == 0 || transform.Count == shortestTransformations[0].Count);
+					shortestTransformations.Add(transform);
 
 					Debug.Assert(problem.UsedTransform <= usedTransformLimit);
 					usedTransformLimit = problem.UsedTransform;
@@ -92,10 +78,6 @@ namespace LeetCode
 						queue.Enqueue(p, p.Heuristic);
 						expansionMap[p.Word] = new Tuple<int, IList<Problem>>(p.UsedTransform, v?.Item2);
 					}
-					//#if DEBUG
-					//					else
-					//						Console.WriteLine($"用了{p.UsedTransform}步扩展到{p.Word}，但其他路径只需要{minTransformToWord[p.Word]}步。");
-					//#endif
 				}
 			}
 			//Debug.Assert(shortestTransformations == null || shortestTransformations[0].Count - 1 <= usedTransformLimit); //强制搜索层数限制
