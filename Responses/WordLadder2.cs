@@ -17,7 +17,7 @@ namespace LeetCode
 				//迭代次数为L，IsDifference1的复杂度为W，所以总复杂度为O(WL)。
 				var enhancedList = wordList.Select(w => new Problem(w)).ToList();
 				var words = new List<Problem>(enhancedList);
-				generateNewWords = begingWord => (from w in (IList<Problem>)words
+				generateNewWords = begingWord => (from w in words
 												  where IsDifference1(w.Word, begingWord)
 												  select w).ToList();
 
@@ -26,10 +26,7 @@ namespace LeetCode
 			{
 				//如果wordList较长，变换迭代起始单词的字母，然后检查是否存在于wordList。
 				//迭代次数26W，IsDifference1的复杂度为W，所以总复杂度为O(26W^2) -> O(W^2)。
-				var dic = new Dictionary<string, int>();
-				foreach (var word in wordList)
-					dic.Add(word, GetDifferences(word, endWord));
-
+				var dic = wordList.ToHashSet();
 				generateNewWords = word =>
 				{
 					List<Problem> list = new List<Problem>();
@@ -45,7 +42,7 @@ namespace LeetCode
 
 							charArr[j] = nextCh;
 							string nextWord = new string(charArr);
-							if (dic.TryGetValue(nextWord, out var _) && IsDifference1(nextWord, word))
+							if (dic.Contains(nextWord) && IsDifference1(nextWord, word))
 								list.Add(new Problem(nextWord));
 						}
 						charArr[j] = ch;
@@ -143,24 +140,6 @@ namespace LeetCode
 			return hasDifference;
 		}
 
-		int GetDifferences(string w1, string w2)
-		{
-			Debug.Assert(w1.Length == w2.Length);
-
-			//对特殊情况进行优化
-			if (w1 == w2)
-				return 0;
-
-			int hasDifference = 0;
-			for (int i = 0; i < w1.Length; i++)
-			{
-				if (w1[i] != w2[i])
-					hasDifference++;
-			}
-
-			return hasDifference;
-		}
-
 		LinkedList<string> ChainTransform(Problem p)
 		{
 			var list = new LinkedList<string>();
@@ -173,7 +152,6 @@ namespace LeetCode
 			return list;
 		}
 
-		//[DebuggerDisplay("Word={Word}, d={DifferenceFromSolution}")]
 		class Problem
 		{
 			public Problem(string word, Problem parent = null)
