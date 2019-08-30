@@ -74,13 +74,18 @@ namespace LeetCode
 		/// 如果beginWord无法变换到endWord，返回null。
 		/// </summary>
 		/// <returns></returns>
+		/// <remarks>
+		/// 设generateNewWords的度杂复为g
+		/// 最坏情况产生L^L个节点，每个节点比较是否为解，复杂度W，若不是，产生子节点，复杂度g。
+		/// 所以总复杂度为O((W+g)L^L)。
+		/// </remarks>
 		List<LinkedList<string>> FindLadders(Problem beginWord, string endWord, Func<string, List<Problem>> generateNewWords, int wordListCount)
 		{
 			//还能对beginWord变形几次
 			int usedTransformLimit = wordListCount;
 			Debug.Assert(usedTransformLimit >= 0);
-			SimplePriorityQueue<Problem, int> queue = new SimplePriorityQueue<Problem, int>();
-			queue.Enqueue(beginWord, 0);
+			var queue = new Queue<Problem>();
+			queue.Enqueue(beginWord);
 			List<LinkedList<string>> shortestTransformations = new List<LinkedList<string>>();
 			var expansionMap = new Dictionary<string, Tuple<int, IList<Problem>>>(wordListCount - 1 + 1);//-1表示减去endWord，+1表示加上beginWord
 			while (queue.Count > 0)
@@ -111,7 +116,7 @@ namespace LeetCode
 					var p = new Problem(w.Word, w.DifferenceFromSolution, problem);
 					if (expansionMap.TryGetValue(p.Word, out var v) == false || v.Item1 >= p.UsedTransform)
 					{
-						queue.Enqueue(p, p.Heuristic);
+						queue.Enqueue(p);
 						expansionMap[p.Word] = new Tuple<int, IList<Problem>>(p.UsedTransform, v?.Item2);
 					}
 				}
