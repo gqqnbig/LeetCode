@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Priority_Queue;
 
 namespace LeetCode
 {
@@ -16,7 +15,7 @@ namespace LeetCode
 				//设W为单词长度，L为wordList长度。
 				//如果wordList较短，迭代wordList。
 				//迭代次数为L，IsDifference1的复杂度为W，所以总复杂度为O(WL)。
-				var enhancedList = wordList.Select(w => new Problem(w, GetDifferences(w, endWord))).ToList();
+				var enhancedList = wordList.Select(w => new Problem(w)).ToList();
 				var words = new List<Problem>(enhancedList);
 				generateNewWords = begingWord => (from w in (IList<Problem>)words
 												  where IsDifference1(w.Word, begingWord)
@@ -46,8 +45,8 @@ namespace LeetCode
 
 							charArr[j] = nextCh;
 							string nextWord = new string(charArr);
-							if (dic.TryGetValue(nextWord, out var v) && IsDifference1(nextWord, word))
-								list.Add(new Problem(nextWord, v));
+							if (dic.TryGetValue(nextWord, out var _) && IsDifference1(nextWord, word))
+								list.Add(new Problem(nextWord));
 						}
 						charArr[j] = ch;
 					}
@@ -55,7 +54,7 @@ namespace LeetCode
 				};
 			}
 			//至此，generateNewWords的复杂度为O(min(WL,W^2))
-			var transforms = FindLadders(new Problem(beginWord, GetDifferences(beginWord, endWord)), endWord, generateNewWords, wordList.Count);
+			var transforms = FindLadders(new Problem(beginWord), endWord, generateNewWords, wordList.Count);
 			//如果找不到解，按规定返回空列表
 			if (transforms.Count == 0)
 				return new List<IList<string>>();
@@ -113,7 +112,7 @@ namespace LeetCode
 
 				foreach (var w in nextWords.Item2)
 				{
-					var p = new Problem(w.Word, w.DifferenceFromSolution, problem);
+					var p = new Problem(w.Word, problem);
 					if (expansionMap.TryGetValue(p.Word, out var v) == false || v.Item1 >= p.UsedTransform)
 					{
 						queue.Enqueue(p);
@@ -174,27 +173,22 @@ namespace LeetCode
 			return list;
 		}
 
-		[DebuggerDisplay("Word={Word}, d={DifferenceFromSolution}")]
+		//[DebuggerDisplay("Word={Word}, d={DifferenceFromSolution}")]
 		class Problem
 		{
-			public Problem(string word, int differenceFromSolution, Problem parent = null)
+			public Problem(string word, Problem parent = null)
 			{
 				Word = word;
-				DifferenceFromSolution = differenceFromSolution;
 				Parent = parent;
 				if (parent != null)
 					UsedTransform = parent.UsedTransform + 1;
 			}
 			public string Word { get; }
 
-			public int DifferenceFromSolution { get; }
-
 			/// <summary>
 			/// 从初始状态到达此状态已经使用的变换数量
 			/// </summary>
 			public int UsedTransform { get; }
-
-			public int Heuristic => DifferenceFromSolution + UsedTransform;
 
 			public Problem Parent { get; }
 		}
