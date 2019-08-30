@@ -10,11 +10,52 @@ namespace LeetCode
 	{
 		public IList<IList<string>> FindLadders(string beginWord, string endWord, IList<string> wordList)
 		{
-			var enhancedList = wordList.Select(w => new Problem(w, GetDifferences(w, endWord))).ToList();
-			var words = new List<Problem>(enhancedList);
-			var transforms = FindLadders(new Problem(beginWord, GetDifferences(beginWord, endWord)), endWord,
-										 words,
-										 wordList.Count);
+			Func<string, List<Problem>> generateNewWords;
+			if (wordList.Count < 26 * beginWord.Length)
+			{
+				//设W为单词长度，L为wordList长度。
+				//如果wordList较短，迭代wordList。
+				//迭代次数为L，IsDifference1的复杂度为W，所以总复杂度为O(WL)。
+				var enhancedList = wordList.Select(w => new Problem(w, GetDifferences(w, endWord))).ToList();
+				var words = new List<Problem>(enhancedList);
+				generateNewWords = begingWord => (from w in (IList<Problem>)words
+												  where IsDifference1(w.Word, begingWord)
+												  select w).ToList();
+
+			}
+			else
+			{
+				//如果wordList较长，变换迭代起始单词的字母，然后检查是否存在于wordList。
+				//迭代次数26W，IsDifference1的复杂度为W，所以总复杂度为O(26W^2) -> O(W^2)。
+				var dic = new Dictionary<string, int>();
+				foreach (var word in wordList)
+					dic.Add(word, GetDifferences(word, endWord));
+
+				generateNewWords = word =>
+				{
+					List<Problem> list = new List<Problem>();
+					var charArr = word.ToCharArray();
+					for (int j = 0; j < charArr.Length; j++)
+					{
+						char ch = charArr[j];
+						for (int k = 0; k < 26; k++)
+						{
+							char nextCh = (char)(k + 'a');
+							if (nextCh == ch)
+								continue;
+
+							charArr[j] = nextCh;
+							string nextWord = new string(charArr);
+							if (dic.TryGetValue(nextWord, out var v) && IsDifference1(nextWord, word))
+								list.Add(new Problem(nextWord, v));
+						}
+						charArr[j] = ch;
+					}
+					return list;
+				};
+			}
+			//至此，generateNewWords的复杂度为O(min(WL,W^2))
+			var transforms = FindLadders(new Problem(beginWord, GetDifferences(beginWord, endWord)), endWord, generateNewWords, wordList.Count);
 			//如果找不到解，按规定返回空列表
 			if (transforms.Count == 0)
 				return new List<IList<string>>();
@@ -32,18 +73,16 @@ namespace LeetCode
 		/// 如果beginWord等于endWord，变换长度为0。
 		/// 如果beginWord无法变换到endWord，返回null。
 		/// </summary>
-		/// <param name="beginWord"></param>
-		/// <param name="endWord"></param>
-		/// <param name="wordList"></param>
-		/// <param name="usedTransformLimit">还能对beginWord变形几次</param>
 		/// <returns></returns>
-		List<LinkedList<string>> FindLadders(Problem beginWord, string endWord, IList<Problem> wordList, int usedTransformLimit)
+		List<LinkedList<string>> FindLadders(Problem beginWord, string endWord, Func<string, List<Problem>> generateNewWords, int wordListCount)
 		{
+			//还能对beginWord变形几次
+			int usedTransformLimit = wordListCount;
 			Debug.Assert(usedTransformLimit >= 0);
 			SimplePriorityQueue<Problem, int> queue = new SimplePriorityQueue<Problem, int>();
 			queue.Enqueue(beginWord, 0);
 			List<LinkedList<string>> shortestTransformations = new List<LinkedList<string>>();
-			var expansionMap = new Dictionary<string, Tuple<int, IList<Problem>>>(wordList.Count - 1 + 1);//-1表示减去endWord，+1表示加上beginWord
+			var expansionMap = new Dictionary<string, Tuple<int, IList<Problem>>>(wordListCount - 1 + 1);//-1表示减去endWord，+1表示加上beginWord
 			while (queue.Count > 0)
 			{
 				var problem = queue.Dequeue();
@@ -63,10 +102,7 @@ namespace LeetCode
 
 				if (expansionMap.TryGetValue(problem.Word, out var nextWords) == false || nextWords.Item2 == null)
 				{
-					nextWords = new Tuple<int, IList<Problem>>(nextWords?.Item1 ?? problem.UsedTransform + 1,
-															   (from w in wordList
-																where IsDifference1(w.Word, problem.Word)
-																select w).ToList());
+					nextWords = new Tuple<int, IList<Problem>>(nextWords?.Item1 ?? problem.UsedTransform + 1, generateNewWords(problem.Word));
 					expansionMap[problem.Word] = nextWords;
 				}
 
