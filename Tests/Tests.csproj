@@ -6,7 +6,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{607B8FB9-8A66-47C3-9AED-5590342A42CC}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LeetCode.Tests</RootNamespace>
     <AssemblyName>LeetCode.Tests</AssemblyName>
@@ -38,6 +38,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -72,6 +75,11 @@
     <Compile Include="DivideTwoIntegersTests.cs" />
     <Compile Include="FindTheClosestPalindromeTests.cs" />
     <Compile Include="MaxPointsOnALineTests.cs" />
+    <Compile Include="NonDecreasingArray.cs" />
+    <Compile Include="NonDecreasingArrayTests.cs">
+      <DependentUpon>NonDecreasingArray.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
     <Compile Include="ReverseWordsInAStringTests.cs" />
     <Compile Include="StringToIntegerTests.cs" />
     <Compile Include="CStrongPasswordCheckerTests.cs" />

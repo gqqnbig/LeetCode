@@ -76,9 +76,11 @@ namespace LeetCode.Tests
 		[TestMethod]
 		public void IsPalindromicSpeedTest()
 		{
-			const int count = 10000;
+			//数学方法: 366
+			//文本方法: 371
+			const int count = 500000;
 
-			Stopwatch sw=new Stopwatch();
+			Stopwatch sw = new Stopwatch();
 			sw.Start();
 			for (int i = 0; i < count; i++)
 			{
@@ -87,7 +89,7 @@ namespace LeetCode.Tests
 				IsPalindromic(999999999999999999);
 			}
 			sw.Stop();
-			Console.WriteLine("数学方法: {0}",sw.ElapsedMilliseconds);
+			Console.WriteLine("数学方法: {0}", sw.ElapsedMilliseconds);
 
 
 			sw.Restart();
@@ -142,59 +144,59 @@ namespace LeetCode.Tests
 			}
 		}
 
-		[TestMethod]
-		public void GetDigitSpeedTest()
-		{
-			List<int> numbers = new List<int>();
-			List<int> indexes = new List<int>();
-			List<string> strs = new List<string>();
+		//[TestMethod]
+		//public void GetDigitSpeedTest()
+		//{
+		//	List<int> numbers = new List<int>();
+		//	List<int> indexes = new List<int>();
+		//	List<string> strs = new List<string>();
 
-			Random rand = new Random();
-			for (int i = 0; i < 500000; i++)
-			{
-				var number = rand.Next();
-				numbers.Add(number);
-				var str = number.ToString();
-				strs.Add(str);
-				var length = str.Length;
-				var index = rand.Next(length);
-				indexes.Add(index);
-			}
+		//	Random rand = new Random();
+		//	for (int i = 0; i < 500000; i++)
+		//	{
+		//		var number = rand.Next();
+		//		numbers.Add(number);
+		//		var str = number.ToString();
+		//		strs.Add(str);
+		//		var length = str.Length;
+		//		var index = rand.Next(length);
+		//		indexes.Add(index);
+		//	}
 
-			Stopwatch sw = new Stopwatch();
-			sw.Start();
-			for (int i = 0; i < numbers.Count; i++)
-			{
-				var s = FindTheClosestPalindrome.GetDigit(numbers[i], indexes[i]);
-			}
-			sw.Stop();
-			Console.WriteLine($"GetDigit用时{sw.ElapsedMilliseconds}");
+		//	Stopwatch sw = new Stopwatch();
+		//	sw.Start();
+		//	for (int i = 0; i < numbers.Count; i++)
+		//	{
+		//		var s = FindTheClosestPalindrome.GetDigit(numbers[i], indexes[i]);
+		//	}
+		//	sw.Stop();
+		//	Console.WriteLine($"GetDigit用时{sw.ElapsedMilliseconds}");
 
-			sw.Restart();
-			for (int i = 0; i < numbers.Count; i++)
-			{
-				var s = strs[i][indexes[i]];
-			}
-			sw.Stop();
-			Console.WriteLine($"string[int]用时{sw.ElapsedMilliseconds}");
+		//	sw.Restart();
+		//	for (int i = 0; i < numbers.Count; i++)
+		//	{
+		//		var s = strs[i][indexes[i]];
+		//	}
+		//	sw.Stop();
+		//	Console.WriteLine($"string[int]用时{sw.ElapsedMilliseconds}");
 
-			sw.Restart();
-			for (int i = 0; i < numbers.Count; i++)
-			{
-				var s = Convert.ToInt32(strs[i]);
-			}
-			sw.Stop();
-			Console.WriteLine($"Convert.ToInt32用时{sw.ElapsedMilliseconds}");
+		//	sw.Restart();
+		//	for (int i = 0; i < numbers.Count; i++)
+		//	{
+		//		var s = Convert.ToInt32(strs[i]);
+		//	}
+		//	sw.Stop();
+		//	Console.WriteLine($"Convert.ToInt32用时{sw.ElapsedMilliseconds}");
 
-			sw.Restart();
-			for (int i = 0; i < numbers.Count; i++)
-			{
-				var s = numbers[i].ToString();
-			}
-			sw.Stop();
-			Console.WriteLine($"ToString用时{sw.ElapsedMilliseconds}");
+		//	sw.Restart();
+		//	for (int i = 0; i < numbers.Count; i++)
+		//	{
+		//		var s = numbers[i].ToString();
+		//	}
+		//	sw.Stop();
+		//	Console.WriteLine($"ToString用时{sw.ElapsedMilliseconds}");
 
-		}
+		//}
 
 
 		static int GetDigit(int number, int index, int length = 0)
