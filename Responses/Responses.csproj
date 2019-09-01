@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DivideTwoIntegers.cs" />
+    <Compile Include="FindTheClosestPalindrome.cs" />
     <Compile Include="MaxPointsOnALine.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ReverseWordsInAString.cs" />

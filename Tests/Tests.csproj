@@ -70,6 +70,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DivideTwoIntegersTests.cs" />
+    <Compile Include="FindTheClosestPalindromeTests.cs" />
     <Compile Include="MaxPointsOnALineTests.cs" />
     <Compile Include="ReverseWordsInAStringTests.cs" />
     <Compile Include="StringToIntegerTests.cs" />
