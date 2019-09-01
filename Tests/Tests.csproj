@@ -30,6 +30,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -72,6 +73,10 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="166-Fraction to Recurring Decimal-Tests.cs">
+      <DependentUpon>166-Fraction to Recurring Decimal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="166-Fraction to Recurring Decimal.cs" />
     <Compile Include="DivideTwoIntegersTests.cs" />
     <Compile Include="FindTheClosestPalindromeTests.cs" />
     <Compile Include="MaxPointsOnALineTests.cs" />
