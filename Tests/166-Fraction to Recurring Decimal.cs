@@ -88,5 +88,33 @@ namespace LeetCode.Tests
 			}
 			return (int)Math.Abs(remainder);
 		}
+
+		internal static int Multiply10ThenDiv(int numerator, int denominator, out int remainder)
+		{
+			int a = numerator;
+			int additions = 0;
+			int q = 0;
+			while (additions < 9)
+			{
+				if (a > 0)
+				{
+					a -= denominator;
+					q++;
+				}
+
+				a += numerator;
+				additions++;
+			}
+
+			if (a < 0)
+			{
+				q--;
+				remainder = a + denominator;
+			}
+			else
+				remainder = a;
+
+			return q;
+		}
 	}
 }
