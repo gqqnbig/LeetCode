@@ -57,6 +57,8 @@ namespace LeetCode.Tests
 				else
 					arr[numerator] = sb.Length;
 
+				//把整除和求余和为一部的方法为Math.DivRem，但该方法速度还不如用两个原始运算符。
+				//见https://github.com/dotnet/coreclr/issues/757
 				long l = Math.Abs(numerator * 10L);
 				sb.Append(Math.Abs(l / denominator));
 				numerator = (int)(l % denominator);
