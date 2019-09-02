@@ -15,7 +15,8 @@ namespace LeetCode.Tests
 			numerator /= d;
 			denominator /= d;
 
-			BitArray arr = new BitArray(denominator);
+			const int maxInitialCapacity = 50000;
+			var arr = new Dictionary<int, int>(denominator > maxInitialCapacity ? maxInitialCapacity : denominator);
 			StringBuilder sb = new StringBuilder();
 
 			var quotient = numerator / denominator;
@@ -28,17 +29,18 @@ namespace LeetCode.Tests
 
 			while (numerator != 0)
 			{
-				if (arr[numerator])
+				if (arr.TryGetValue(numerator, out var index))
 				{
+					sb.Insert(index, "(");
 					sb.Append(")");
 					return sb.ToString();
 				}
 				else
-					arr[numerator] = true;
+					arr[numerator] = sb.Length;
 
-				numerator *= 10;
-				sb.Append(numerator / denominator);
-				numerator = numerator % denominator;
+				long l = numerator * 10L;
+				sb.Append(l / denominator);
+				numerator = (int)(l % denominator);
 			}
 
 			return sb.ToString();
@@ -48,7 +50,7 @@ namespace LeetCode.Tests
 		int GetCommonDivisor(int num1, int num2)
 		{
 			//辗转相除法
-			int remainder = num1;
+			int remainder = num2;
 			while (num1 % num2 > 0)
 			{
 				remainder = num1 % num2;
