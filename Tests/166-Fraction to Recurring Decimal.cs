@@ -19,6 +19,7 @@ namespace LeetCode.Tests
 			if (numerator <= 0 && denominator > 0 || numerator >= 0 && denominator < 0)
 				sb.Append("-");
 
+			//令运行时间从104ms减少到84。
 			var d = GetCommonDivisor(numerator, denominator);
 			numerator /= d;
 			denominator /= d;
@@ -26,9 +27,17 @@ namespace LeetCode.Tests
 			const int maxInitialCapacity = 50000;
 			var arr = new Dictionary<int, int>(denominator < -maxInitialCapacity || denominator > maxInitialCapacity ? maxInitialCapacity : Math.Abs(denominator));
 
-			long quotient = Math.DivRem(Math.Abs((long)numerator), Math.Abs((long)denominator), out var remainder);
-			sb.Append(quotient);
-			numerator = (int)remainder;
+			if (numerator == int.MinValue)
+			{
+				if (denominator == 1)
+					return numerator.ToString();
+				else if (denominator == -1)
+					return numerator.ToString().Substring(1);
+			}
+			var quotient = Math.DivRem(numerator, denominator, out var remainder);
+			Debug.Assert(int.MinValue < quotient);
+			sb.Append(Math.Abs(quotient));
+			numerator = remainder;
 
 			//进入小数部分
 			if (numerator != 0)
