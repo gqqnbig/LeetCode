@@ -11,6 +11,11 @@ namespace LeetCode.Tests
 	public class FractionToRecurringDecimalTests
 	{
 		[DataTestMethod]
+		[DataRow("-6.25", -50, 8)]
+		[DataRow("0", 0, 3)]
+		[DataRow("2147483648", -2147483648, -1)]
+		[DataRow("0.0000000004656612873077392578125", -1, -2147483648)]
+		[DataRow("-0.58(3)", 7, -12)]
 		[DataRow("2", 2, 1)]
 		[DataRow("0.(9900)", 100, 101)]
 		[DataRow("0.(857142)", 6, 7)]
@@ -21,6 +26,17 @@ namespace LeetCode.Tests
 		public void FractionToDecimalTest(string expected, int numerator, int denominator)
 		{
 			Assert.AreEqual(expected, new FractionToRecurringDecimal().FractionToDecimal(numerator, denominator));
+		}
+
+
+		[DataTestMethod]
+		[DataRow(21, 1071, 462)]
+		[DataRow(21, 1071, -462)]
+		[DataRow(21, -1071, -462)]
+		[DataRow(21, -1071, 462)]
+		public void GetCommonDivisorTest(int expected, int a, int b)
+		{
+			Assert.AreEqual(expected, FractionToRecurringDecimal.GetCommonDivisor(a, b));
 		}
 	}
 }
