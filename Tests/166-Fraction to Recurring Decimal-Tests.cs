@@ -45,6 +45,8 @@ namespace LeetCode.Tests
 		[DataRow(33, 95)]
 		[DataRow(int.MinValue + 1, int.MinValue)]
 		[DataRow(int.MaxValue - 1, int.MaxValue)]
+		[DataRow(1, int.MaxValue)]
+		[DataRow(1, int.MinValue)]
 		//[DataRow(490753113, 2034414257)]
 		public void Multiply10ThenDivTest(int numerator, int denominator)
 		{

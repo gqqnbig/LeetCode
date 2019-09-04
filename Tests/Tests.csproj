@@ -77,6 +77,10 @@
       <DependentUpon>166-Fraction to Recurring Decimal.cs</DependentUpon>
     </Compile>
     <Compile Include="166-Fraction to Recurring Decimal.cs" />
+	<Compile Include="220-Contains Duplicate III-Tests.cs">
+		<DependentUpon>220-Contains Duplicate III.cs</DependentUpon>
+	</Compile>
+    <Compile Include="220-Contains Duplicate III.cs" />
     <Compile Include="DivideTwoIntegersTests.cs" />
     <Compile Include="FindTheClosestPalindromeTests.cs" />
     <Compile Include="MaxPointsOnALineTests.cs" />

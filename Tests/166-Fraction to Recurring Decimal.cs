@@ -57,11 +57,25 @@ namespace LeetCode.Tests
 				else
 					arr[numerator] = sb.Length;
 
-				//把整除和求余和为一部的方法为Math.DivRem，但该方法速度还不如用两个原始运算符。
-				//见https://github.com/dotnet/coreclr/issues/757
-				long l = Math.Abs(numerator * 10L);
-				sb.Append(Math.Abs(l / denominator));
-				numerator = (int)(l % denominator);
+				//float的精度不足够表示 -2147483648/10。
+				//float会计算成         -214748368
+
+				int q= Multiply10ThenDiv(numerator, denominator, out var r);
+
+				Debug.Assert(-10 < q && q < 10);
+				Debug.Assert(q == numerator * 10L / denominator);
+				sb.Append(Math.Abs(q));
+				Debug.Assert(r == numerator * 10L % denominator, "", "{0}/{1}的进位求余出错。", numerator, denominator);
+				numerator = r;
+				if (denominator > 0)
+					Debug.Assert(Math.Abs(numerator) < denominator);
+				else
+					Debug.Assert(denominator < -Math.Abs(numerator));
+				////把整除和求余和为一部的方法为Math.DivRem，但该方法速度还不如用两个原始运算符。
+				////见https://github.com/dotnet/coreclr/issues/757
+				//long l = Math.Abs(numerator * 10L);
+				//sb.Append(Math.Abs(l / denominator));
+				//numerator = (int)(l % denominator);
 			}
 
 			return sb.ToString();
@@ -96,7 +110,7 @@ namespace LeetCode.Tests
 			int q = 0;
 			while (additions < 9)
 			{
-				if (a > 0)
+				if (a > 0 && denominator > 0 || a < 0 && denominator < 0)
 				{
 					a -= denominator;
 					q++;
@@ -106,7 +120,7 @@ namespace LeetCode.Tests
 				additions++;
 			}
 
-			if (a < 0)
+			if (a < 0 && denominator > 0 || a > 0 && denominator < 0)
 			{
 				q--;
 				remainder = a + denominator;

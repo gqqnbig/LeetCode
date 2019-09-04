@@ -12,7 +12,12 @@ namespace LeetCode
 	{
 		public static void Main(string[] args)
 		{
+			//Multiply10ThenDiv(241, 251, out int _);
+			//Multiply10ThenDiv(26, 251, out int _);
+			Console.ReadKey();
 		}
+
+
 
 		static bool IsPalindromic(string n)
 		{
