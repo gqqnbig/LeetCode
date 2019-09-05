@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,13 +19,12 @@ namespace LeetCode.Tests
 			for (; ; )
 			{
 
-				n = NearestPalindromicUp(n);
+				n = NextPalindrome(n);
 				var r = IsPrime(n);
-				if (r != 0)
-					n += r - 1;
+				if (r == false)
+					n++;
 				else
 					break;
-				Console.WriteLine("n={0}",n);
 			}
 			return n;
 		}
@@ -35,20 +35,19 @@ namespace LeetCode.Tests
 		/// </summary>
 		/// <param name="n"></param>
 		/// <returns></returns>
-		public int IsPrime(int n)
+		public bool IsPrime(int n)
 		{
-			IsPrimeEntry++;
 			if (n == 1)
-				return 1;
+				return false;
 
-			int limit = (int) Math.Sqrt(n);
+			int limit = (int)Math.Sqrt(n);
 			for (int i = 2; i <= limit; i++)
 			{
 				if (n % i == 0)
-					return i;
+					return false;
 			}
 
-			return 0;
+			return true;
 		}
 
 		/// <summary>
@@ -84,6 +83,79 @@ namespace LeetCode.Tests
 			}
 
 			return n;
+		}
+
+		static int NextPalindrome(int n)
+		{
+			int nSize = GetSize(n);
+			int root = GetRoot(n);
+
+			var palindrome = FormPalindrome(root, nSize);
+			if (palindrome < n)
+			{
+				root++;
+				palindrome = FormPalindrome(root, nSize);
+			}
+
+			return palindrome;
+		}
+
+		/// <summary>
+		/// 根据root组成回文数
+		/// </summary>
+		/// <param name="root"></param>
+		/// <param name="size"></param>
+		/// <returns></returns>
+		public static int FormPalindrome(int root, int size)
+		{
+#if DEBUG
+			int length = GetSize(root);
+			if (length != (size + 1) / 2)
+				throw new ArgumentException($"root={root}，长度为{length}。本方法只能合成长度为{length * 2}或{length * 2 - 1}的回文数，而指定的size为{size}。");
+#endif
+			var palindrome = root;
+
+			if (size % 2 == 1)
+				root /= 10;
+
+			while (root > 0)
+			{
+				var digit = root % 10;
+				root /= 10;
+				palindrome = palindrome * 10 + digit;
+			}
+			return palindrome;
+		}
+
+
+		static int GetRoot(int n)
+		{
+			var size = GetSize(n);
+			var rootSize = (size + 1) / 2;
+			var root = n;
+			for (var i = 0; i < size - rootSize; i++)
+			{
+				root /= 10;
+			}
+
+			return root;
+		}
+
+		/// <summary>
+		/// 获得数字的位数
+		/// </summary>
+		/// <param name="n"></param>
+		static int GetSize(int n)
+		{
+			if (n < 10) return 1;
+			var digit = 0;
+			do
+			{
+				digit++;
+				n /= 10;
+			}
+			while (n != 0);
+			return digit;
 		}
 	}
 }
