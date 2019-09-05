@@ -85,19 +85,26 @@ namespace LeetCode.Tests
 			return n;
 		}
 
+		/// <summary>
+		/// 返回大于等于n的首个回文数
+		/// </summary>
+		/// <param name="n"></param>
+		/// <returns></returns>
 		static int NextPalindrome(int n)
 		{
 			int nSize = GetSize(n);
 			int root = GetRoot(n);
 
-			var palindrome = FormPalindrome(root, nSize);
-			if (palindrome < n)
-			{
-				root++;
-				palindrome = FormPalindrome(root, nSize);
-			}
+			var p = FormPalindrome(root, nSize);
+			if (p < n)
+				p = FormPalindrome(root+1, nSize);
 
-			return palindrome;
+			//假设n=111999，p=111111。
+			//root+1后p=112211>n。
+
+			Debug.Assert(p >= n);
+
+			return p;
 		}
 
 		/// <summary>
@@ -106,7 +113,7 @@ namespace LeetCode.Tests
 		/// <param name="root"></param>
 		/// <param name="size"></param>
 		/// <returns></returns>
-		public static int FormPalindrome(int root, int size)
+		static int FormPalindrome(int root, int size)
 		{
 #if DEBUG
 			int length = GetSize(root);
@@ -132,12 +139,7 @@ namespace LeetCode.Tests
 		{
 			var size = GetSize(n);
 			var rootSize = (size + 1) / 2;
-			var root = n;
-			for (var i = 0; i < size - rootSize; i++)
-			{
-				root /= 10;
-			}
-
+			var root = n / (int)Math.Pow(10, size - rootSize);
 			return root;
 		}
 
