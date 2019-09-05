@@ -8,6 +8,9 @@ namespace LeetCode.Tests
 {
 	class CPrimePalindrome
 	{
+		public int NearestPalindromicUpEntry = 0;
+		public int IsPrimeEntry = 0;
+
 		public int PrimePalindrome(int n)
 		{
 			if (n <= 1)
@@ -33,6 +36,7 @@ namespace LeetCode.Tests
 		/// <returns></returns>
 		public int IsPrime(int n)
 		{
+			IsPrimeEntry++;
 			if (n == 1)
 				return 1;
 
@@ -53,6 +57,8 @@ namespace LeetCode.Tests
 		/// <returns></returns>
 		int NearestPalindromicUp(int n)
 		{
+			NearestPalindromicUpEntry++;
+
 			string s = n.ToString();
 			for (int i = 0; i < s.Length / 2; i++)
 			{

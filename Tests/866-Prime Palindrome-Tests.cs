@@ -24,10 +24,11 @@ namespace LeetCode.Tests
 		[TestMethod]
 		public void PrimePalindromeSpeedTest()
 		{
-			Stopwatch sw=Stopwatch.StartNew();
-			var result = new CPrimePalindrome().PrimePalindrome(31880255);
+			Stopwatch sw = Stopwatch.StartNew();
+			var solution = new CPrimePalindrome();
+			var result = solution.PrimePalindrome(31880255);
 			sw.Stop();
-			Console.WriteLine(sw.ElapsedMilliseconds);
+			Console.WriteLine("运行时间{0}ms, NearestPalindromicUpEntry={1}, IsPrimeEntry={2}", sw.ElapsedMilliseconds, solution.NearestPalindromicUpEntry, solution.IsPrimeEntry);
 			Assert.AreEqual(100030001, result);
 		}
 	}
