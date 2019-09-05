@@ -24,6 +24,7 @@ namespace LeetCode.Tests
 					n += r - 1;
 				else
 					break;
+				Console.WriteLine("n={0}",n);
 			}
 			return n;
 		}
