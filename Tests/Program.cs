@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LeetCode.Tests;
 
 namespace LeetCode
 {
@@ -12,8 +13,12 @@ namespace LeetCode
 	{
 		public static void Main(string[] args)
 		{
-			//Multiply10ThenDiv(241, 251, out int _);
-			//Multiply10ThenDiv(26, 251, out int _);
+			var solution = new CPrimePalindrome();
+			for (int i = 0; i < 50; i++)
+			{
+				Console.WriteLine("{0}{1} prime.", i, solution.IsPrime(i) == 0 ? " is" : " is not");
+			}
+
 			Console.ReadKey();
 		}
 

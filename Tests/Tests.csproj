@@ -77,12 +77,19 @@
       <DependentUpon>166-Fraction to Recurring Decimal.cs</DependentUpon>
     </Compile>
     <Compile Include="166-Fraction to Recurring Decimal.cs" />
-	<Compile Include="220-Contains Duplicate III-Tests.cs">
-		<DependentUpon>220-Contains Duplicate III.cs</DependentUpon>
-	</Compile>
+    <Compile Include="220-Contains Duplicate III-Tests.cs">
+      <DependentUpon>220-Contains Duplicate III.cs</DependentUpon>
+    </Compile>
     <Compile Include="220-Contains Duplicate III.cs" />
+    <Compile Include="866-Prime Palindrome-Tests.cs">
+    	<DependentUpon>866-Prime Palindrome.cs</DependentUpon>
+    </Compile>
+    <Compile Include="866-Prime Palindrome.cs" />
     <Compile Include="DivideTwoIntegersTests.cs" />
-    <Compile Include="FindTheClosestPalindromeTests.cs" />
+    <Compile Include="564-Find the Closest Palindrome-Tests.cs">
+      <DependentUpon>564-Find the Closest Palindrome.cs</DependentUpon>
+    </Compile>
+    <Compile Include="564-Find the Closest Palindrome.cs" />
     <Compile Include="MaxPointsOnALineTests.cs" />
     <Compile Include="NonDecreasingArray.cs" />
     <Compile Include="NonDecreasingArrayTests.cs">
