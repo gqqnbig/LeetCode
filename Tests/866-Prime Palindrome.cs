@@ -147,15 +147,7 @@ namespace LeetCode.Tests
 		/// <param name="n"></param>
 		static int GetSize(int n)
 		{
-			if (n < 10) return 1;
-			var digit = 0;
-			do
-			{
-				digit++;
-				n /= 10;
-			}
-			while (n != 0);
-			return digit;
+			return (int)Math.Floor(Math.Log10(n)) + 1;
 		}
 	}
 }
