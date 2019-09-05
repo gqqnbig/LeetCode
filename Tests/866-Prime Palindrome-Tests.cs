@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,7 +24,11 @@ namespace LeetCode.Tests
 		[TestMethod]
 		public void PrimePalindromeSpeedTest()
 		{
-			Assert.AreEqual(100030001, new CPrimePalindrome().PrimePalindrome(31880255));
+			Stopwatch sw=Stopwatch.StartNew();
+			var result = new CPrimePalindrome().PrimePalindrome(31880255);
+			sw.Stop();
+			Console.WriteLine(sw.ElapsedMilliseconds);
+			Assert.AreEqual(100030001, result);
 		}
 	}
 }

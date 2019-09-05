@@ -13,11 +13,11 @@ namespace LeetCode
 	{
 		public static void Main(string[] args)
 		{
-			var solution = new CPrimePalindrome();
-			for (int i = 0; i < 50; i++)
-			{
-				Console.WriteLine("{0}{1} prime.", i, solution.IsPrime(i) == 0 ? " is" : " is not");
-			}
+			//var solution = new CPrimePalindrome();
+			//for (int i = 0; i < 50; i++)
+			//{
+			//	Console.WriteLine("{0}{1} prime.", i, solution.IsPrime(i) == 0 ? " is" : " is not");
+			//}
 
 			Console.ReadKey();
 		}
