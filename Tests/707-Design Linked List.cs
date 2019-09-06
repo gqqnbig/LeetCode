@@ -10,6 +10,7 @@ namespace LeetCode.Tests
 	public class MyLinkedList
 	{
 		private Node head;
+		private int count;
 
 
 		/** Initialize your data structure here. */
@@ -21,7 +22,7 @@ namespace LeetCode.Tests
 		/** Get the value of the index-th node in the linked list. If the index is invalid, return -1. */
 		public int Get(int index)
 		{
-			if (index < 0)
+			if (index < 0 || index >= count)
 				return -1;
 			Node n = head;
 			while (index > 0 && n != null)
@@ -42,6 +43,7 @@ namespace LeetCode.Tests
 		{
 			Node n = new Node(val, head);
 			head = n;
+			count++;
 		}
 
 		/** Append a node of value val to the last element of the linked list. */
@@ -58,6 +60,7 @@ namespace LeetCode.Tests
 				head = new Node(val, null);
 			else
 				prev.Next = new Node(val, null);
+			count++;
 		}
 
 		///<summary>Add a node of value val before the index-th node in the linked list.
@@ -91,6 +94,7 @@ namespace LeetCode.Tests
 			{
 				Debug.Assert(prev != null);
 				prev.Next = new Node(val, prev.Next);
+				count++;
 			}
 
 		}
@@ -103,6 +107,7 @@ namespace LeetCode.Tests
 			if (index == 0)
 			{
 				head = head.Next;
+				count--;
 				return;
 			}
 			Node prev = null;
@@ -121,6 +126,7 @@ namespace LeetCode.Tests
 			else
 			{
 				prev.Next = n.Next;
+				count--;
 			}
 
 		}

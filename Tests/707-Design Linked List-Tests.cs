@@ -38,7 +38,7 @@ namespace LeetCode.Tests
 			Assert.AreEqual(-1, list.Get(-1));
 
 			list.AddAtIndex(-1,0);
-			Assert.That.AreEqual(-1, () => list.Get(0));
+			Assert.That.AreEqual(0, () => list.Get(0));
 
 			list.DeleteAtIndex(-1);
 		}
