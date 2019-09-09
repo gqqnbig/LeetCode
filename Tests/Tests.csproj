@@ -101,10 +101,16 @@
       <DependentUpon>220-Contains Duplicate III.cs</DependentUpon>
     </Compile>
     <Compile Include="220-Contains Duplicate III.cs" />
+    <Compile Include="468-Validate IP Address-Tests.cs" />
+    <Compile Include="468-Validate IP Address.cs" />
     <Compile Include="707-Design Linked List-Tests.cs">
       <DependentUpon>707-Design Linked List.cs</DependentUpon>
     </Compile>
     <Compile Include="707-Design Linked List.cs" />
+	<Compile Include="862-Shortest Subarray with Sum at Least K-Tests.cs">
+		<DependentUpon>862-Shortest Subarray with Sum at Least K.cs</DependentUpon>
+	</Compile>
+    <Compile Include="862-Shortest Subarray with Sum at Least K.cs" />
     <Compile Include="866-Prime Palindrome-Tests.cs">
       <DependentUpon>866-Prime Palindrome.cs</DependentUpon>
     </Compile>
