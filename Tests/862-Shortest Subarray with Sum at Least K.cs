@@ -23,46 +23,6 @@ namespace LeetCode.Tests
 			SumLength[] stickyData = new SumLength[A.Length];
 			stickyData[A.Length - 1] = new SumLength { Sum = A[A.Length - 1], Length = 1 };
 
-			//int[] compactA = new int[A.Length];
-			//Array.Copy(A, compactA, A.Length);
-			//CompactArray(compactA);
-
-			//SumLength[] nonStickyData = new SumLength[A.Length];
-			//nonStickyData[A.Length - 1] = new SumLength { Sum = int.MinValue };
-
-			//SumLength[] overallData = new SumLength[A.Length];
-			//overallData[A.Length-1] = new SumLength { Sum = A[A.Length - 1], Length = 1 };
-
-
-			//for (int i = A.Length - 2; i >= 0; i--)
-			//{
-			//	if (A[i] > A[i] + stickyData[i + 1].Sum)
-			//		stickyData[i] = new SumLength { Sum = A[i], Length = 1 };
-			//	else
-			//	{
-			//		var data = new SumLength { Sum = A[i] + stickyData[i + 1].Sum, Length = stickyData[i + 1].Length + 1 };
-			//		int t = i + data.Length - 1;
-			//		while (data.Sum - A[t] > K)
-			//		{
-			//			//舍弃尾部
-			//			data.Sum -= A[t];
-			//			data.Length--;
-			//			t--;
-			//		}
-			//		stickyData[i] = data;
-			//	}
-
-			//	if(stickyData[i+1]
-
-			//	nonStickyData[i]
-			//}
-
-
-
-
-
-
-
 			for (int i = A.Length - 2; i >= 0; i--)
 			{
 				if (A[i] > A[i] + stickyData[i + 1].Sum)

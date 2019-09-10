@@ -72,7 +72,17 @@ namespace LeetCode.Tests
 		{
 			var arr = (from c in Resource1.P862LongTestData.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
 					   select Convert.ToInt32(c)).ToArray();
-			Console.WriteLine(new ShortestSubarrayWithSumAtLeastK().ShortestSubarray(arr, 663610288));
+
+			var sw = Stopwatch.StartNew();
+			var actual = new ShortestSubarrayWithSumAtLeastK().ShortestSubarray(arr, 663610288);
+			sw.Stop();
+			Console.WriteLine("DP {0}ms", sw.ElapsedMilliseconds);
+			Assert.AreEqual(25813, actual);
+
+			sw.Restart();
+			new ShortestSubarrayWithSumAtLeastK().ShortestSubarrayBruteForce(arr, 663610288);
+			sw.Stop();
+			Console.WriteLine("BruteForce {0}ms", sw.ElapsedMilliseconds);
 		}
 	}
 }
