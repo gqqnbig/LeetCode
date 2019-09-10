@@ -11,12 +11,37 @@ namespace LeetCode.Tests
 	public class ShortestSubarrayWithSumAtLeastKTests
 	{
 		[DataTestMethod]
+		[DataRow(1, 5, new[] { 3, 5, -7, -6 })]
+		[DataRow(2, 8, new[] { 1, 2, 3, 5, -7, -6 })]
 		[DataRow(1, 1, new[] { 1 })]
 		[DataRow(-1, 4, new[] { 1, 2 })]
 		[DataRow(3, 3, new[] { 2, -1, 2 })]
 		public void ShortestSubarrayTest(int expected, int K, int[] arr)
 		{
 			Assert.AreEqual(expected, new ShortestSubarrayWithSumAtLeastK().ShortestSubarray(arr, K));
+		}
+
+		[TestMethod]
+		public void ShortestSubarrayGenerationTest()
+		{
+			for (int c = 0; c < 50; c++)
+			{
+				Random rand = new Random();
+
+				int length = 10;
+				int[] arr = new int[length];
+				for (int i = 0; i < arr.Length; i++)
+				{
+					arr[i] = rand.Next(5000) - 2500;
+				}
+
+				int k = rand.Next(10000);
+
+				var solution = new ShortestSubarrayWithSumAtLeastK();
+				var expected = solution.ShortestSubarrayBruteForce(arr, k);
+				Assert.That.AreEqual(expected, () => solution.ShortestSubarray(arr, k));
+
+			}
 		}
 
 		[TestMethod]
