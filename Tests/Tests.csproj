@@ -107,9 +107,9 @@
       <DependentUpon>707-Design Linked List.cs</DependentUpon>
     </Compile>
     <Compile Include="707-Design Linked List.cs" />
-	<Compile Include="862-Shortest Subarray with Sum at Least K-Tests.cs">
-		<DependentUpon>862-Shortest Subarray with Sum at Least K.cs</DependentUpon>
-	</Compile>
+    <Compile Include="862-Shortest Subarray with Sum at Least K-Tests.cs">
+      <DependentUpon>862-Shortest Subarray with Sum at Least K.cs</DependentUpon>
+    </Compile>
     <Compile Include="862-Shortest Subarray with Sum at Least K.cs" />
     <Compile Include="866-Prime Palindrome-Tests.cs">
       <DependentUpon>866-Prime Palindrome.cs</DependentUpon>
@@ -127,6 +127,11 @@
       <DependentUpon>NonDecreasingArray.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
+    <Compile Include="Resource1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource1.resx</DependentUpon>
+    </Compile>
     <Compile Include="ReverseWordsInAStringTests.cs" />
     <Compile Include="StringToIntegerTests.cs" />
     <Compile Include="CStrongPasswordCheckerTests.cs" />
@@ -145,6 +150,12 @@
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resource1.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
