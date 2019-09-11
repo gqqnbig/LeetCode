@@ -20,7 +20,7 @@ namespace LeetCode.Tests
 		public int removeObstacle(int numRows, int numColumns, int[,] lot)
 		{
 			Debug.Assert(lot.Cast<int>().Count(v => v == 9) == 1, "There must be only 1 obstacle.");
-			var r= removeObstacle(new Point(0, 0), lot, new Point(-1, -1), new int[lot.GetLength(0), lot.GetLength(1)]);
+			var r = removeObstacle(new Point(0, 0), lot, new Point(-1, -1), new int[lot.GetLength(0), lot.GetLength(1)]);
 			if (r == int.MaxValue)
 				return -1;
 			else
@@ -66,7 +66,8 @@ namespace LeetCode.Tests
 				minStep = Math.Min(minStep, s);
 			}
 
-			minStep++; //Add the step of this method itself.
+			if (minStep < int.MaxValue)
+				minStep++; //Add the step of this method itself.
 			cache[location.Y, location.X] = minStep;
 			return minStep;
 		}
@@ -82,6 +83,15 @@ namespace LeetCode.Tests
 			public int Y { get; }
 		}
 
+		struct Problem
+		{
+			public Point Location { get; }
+			public int UsedStep { get; }
+
+			public Point Avoid { get; }
+
+		}
+
 
 		[TestMethod]
 		public void removeObstacleTest()
@@ -94,6 +104,19 @@ namespace LeetCode.Tests
 			};
 
 			Assert.AreEqual(3, new Amazon2().removeObstacle(data));
+		}
+
+		[TestMethod]
+		public void removeObstacleTest2()
+		{
+			var data = new int[,]
+			{
+				{1,0,1, 0, 0},
+				{1,1,0, 0, 0},
+				{0,1,1, 9, 1}
+			};
+
+			Assert.AreEqual(5, new Amazon2().removeObstacle(data));
 		}
 
 		//[DataTestMethod]
