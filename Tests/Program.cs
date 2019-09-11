@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ExpressionToCodeLib;
 using LeetCode.Tests;
 
 namespace LeetCode
@@ -13,11 +14,8 @@ namespace LeetCode
 	{
 		public static void Main(string[] args)
 		{
-			//var solution = new CPrimePalindrome();
-			//for (int i = 0; i < 50; i++)
-			//{
-			//	Console.WriteLine("{0}{1} prime.", i, solution.IsPrime(i) == 0 ? " is" : " is not");
-			//}
+			int[] v=new int[]{1,2,4,4};
+			Console.WriteLine(ObjectToCode.ComplexObjectToPseudoCode(v));
 
 			Console.ReadKey();
 		}

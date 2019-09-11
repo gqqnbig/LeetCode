@@ -31,6 +31,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -101,6 +102,8 @@
       <DependentUpon>220-Contains Duplicate III.cs</DependentUpon>
     </Compile>
     <Compile Include="220-Contains Duplicate III.cs" />
+    <Compile Include="239-Sliding Window Maximum-Tests.cs" />
+    <Compile Include="239-Sliding Window Maximum.cs" />
     <Compile Include="468-Validate IP Address-Tests.cs" />
     <Compile Include="468-Validate IP Address.cs" />
     <Compile Include="707-Design Linked List-Tests.cs">
@@ -118,6 +121,7 @@
     <Compile Include="Amazon1.cs" />
     <Compile Include="Amazon2.cs" />
     <Compile Include="AssertThat.cs" />
+    <Compile Include="CollectionAssertThat.cs" />
     <Compile Include="DivideTwoIntegersTests.cs" />
     <Compile Include="564-Find the Closest Palindrome-Tests.cs">
       <DependentUpon>564-Find the Closest Palindrome.cs</DependentUpon>

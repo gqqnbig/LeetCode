@@ -19,59 +19,42 @@ namespace LeetCode.Tests
 
 		public int removeObstacle(int numRows, int numColumns, int[,] lot)
 		{
-			Debug.Assert(lot.Cast<int>().Count(v => v == 9) == 1, "There must be only 1 obstacle.");
-			var r = removeObstacle(new Point(0, 0), lot, new Point(-1, -1), new int[lot.GetLength(0), lot.GetLength(1)]);
-			if (r == int.MaxValue)
-				return -1;
-			else
-				return r;
+			//Debug.Assert(lot.Cast<int>().Count(v => v == 9) == 1, "There must be only 1 obstacle.");
+
+			Queue<Problem> queue = new Queue<Problem>();
+			queue.Enqueue(new Problem(new Point(0, 0), 0, new Point(-1, -1)));
+			int[,] cache = new int[lot.GetLength(0), lot.GetLength(1)];
+			while (queue.Count > 0)
+			{
+				var p = queue.Dequeue();
+				if (lot[p.Location.Y, p.Location.X] == 9) //cleaned the obstacle
+					return p.UsedStep;
+
+				var location = p.Location;
+				var avoid = p.Avoid;
+				if (cache[location.Y, location.X] != 0 && cache[location.Y, location.X] < p.UsedStep)
+					continue;
+				else
+					cache[location.Y, location.X] = p.UsedStep;
+
+				if (location.X + 1 < lot.GetLength(1) && location.X + 1 != avoid.X && lot[location.Y, location.X + 1] != 0)
+					queue.Enqueue(new Problem(new Point(location.X + 1, location.Y), p.UsedStep + 1, location));
+
+				//move left
+				if (location.X - 1 >= 0 && location.X - 1 != avoid.X && lot[location.Y, location.X - 1] != 0)
+					queue.Enqueue(new Problem(new Point(location.X - 1, location.Y), p.UsedStep + 1, location));
+
+				//move down
+				if (location.Y + 1 < lot.GetLength(0) && location.Y + 1 != avoid.Y && lot[location.Y + 1, location.X] != 0)
+					queue.Enqueue(new Problem(new Point(location.X, location.Y + 1), p.UsedStep + 1, location));
+
+				//move up
+				if (location.Y - 1 >= 0 && location.Y - 1 != avoid.Y && lot[location.Y - 1, location.X] != 0)
+					queue.Enqueue(new Problem(new Point(location.X, location.Y - 1), p.UsedStep + 1, location));
+			}
+
+			return -1;
 		}
-
-		int removeObstacle(Point location, int[,] lot, Point avoid, int[,] cache)
-		{
-			if (lot[location.Y, location.X] == 9) //cleaned the obstacle
-				return 0;
-			else if (lot[location.Y, location.X] == 0)
-				throw new InvalidOperationException("Robot should never be moved to trenches.");
-
-			if (cache[location.Y, location.X] != 0)
-				return cache[location.Y, location.X];
-
-			int minStep = int.MaxValue;
-			//move right
-			if (location.X + 1 < lot.GetLength(1) && location.X + 1 != avoid.X && lot[location.Y, location.X + 1] != 0)
-			{
-				var s = removeObstacle(new Point(location.X + 1, location.Y), lot, location, cache);
-				minStep = Math.Min(minStep, s);
-			}
-
-			//move left
-			if (location.X - 1 >= 0 && location.X - 1 != avoid.X && lot[location.Y, location.X - 1] != 0)
-			{
-				var s = removeObstacle(new Point(location.X - 1, location.Y), lot, location, cache);
-				minStep = Math.Min(minStep, s);
-			}
-
-			//move down
-			if (location.Y + 1 < lot.GetLength(0) && location.Y + 1 != avoid.Y && lot[location.Y + 1, location.X] != 0)
-			{
-				var s = removeObstacle(new Point(location.X, location.Y + 1), lot, location, cache);
-				minStep = Math.Min(minStep, s);
-			}
-
-			//move up
-			if (location.Y - 1 >= 0 && location.Y - 1 != avoid.Y && lot[location.Y - 1, location.X] != 0)
-			{
-				var s = removeObstacle(new Point(location.X, location.Y - 1), lot, location, cache);
-				minStep = Math.Min(minStep, s);
-			}
-
-			if (minStep < int.MaxValue)
-				minStep++; //Add the step of this method itself.
-			cache[location.Y, location.X] = minStep;
-			return minStep;
-		}
-
 		struct Point
 		{
 			public Point(int x, int y)
@@ -85,7 +68,17 @@ namespace LeetCode.Tests
 
 		struct Problem
 		{
+			public Problem(Point location, int usedStep, Point avoid)
+			{
+				Location = location;
+				UsedStep = usedStep;
+				Avoid = avoid;
+			}
 			public Point Location { get; }
+
+			/// <summary>
+			/// The number of steps used to reach <see cref="Location"/>.
+			/// </summary>
 			public int UsedStep { get; }
 
 			public Point Avoid { get; }
