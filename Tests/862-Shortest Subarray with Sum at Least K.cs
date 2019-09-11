@@ -10,6 +10,7 @@ namespace LeetCode.Tests
 {
 	class ShortestSubarrayWithSumAtLeastK
 	{
+		public int LoopCount { get; set; }
 
 		/// <summary>
 		/// 
@@ -41,6 +42,8 @@ namespace LeetCode.Tests
 							data.Sum = s;
 							data.Length = t - i + 1;
 						}
+
+						LoopCount++;
 					}
 					stickyData[i] = data;
 				}
@@ -227,6 +230,7 @@ namespace LeetCode.Tests
 				{
 					sum += A[j];
 
+					LoopCount++;
 					if (sum >= K)
 					{
 						int l = j - i + 1;

@@ -115,6 +115,7 @@
       <DependentUpon>866-Prime Palindrome.cs</DependentUpon>
     </Compile>
     <Compile Include="866-Prime Palindrome.cs" />
+    <Compile Include="Amazon.cs" />
     <Compile Include="AssertThat.cs" />
     <Compile Include="DivideTwoIntegersTests.cs" />
     <Compile Include="564-Find the Closest Palindrome-Tests.cs">

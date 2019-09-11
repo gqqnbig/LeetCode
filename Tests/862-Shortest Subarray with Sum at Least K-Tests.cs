@@ -74,15 +74,17 @@ namespace LeetCode.Tests
 					   select Convert.ToInt32(c)).ToArray();
 
 			var sw = Stopwatch.StartNew();
-			var actual = new ShortestSubarrayWithSumAtLeastK().ShortestSubarray(arr, 663610288);
+			var s1 = new ShortestSubarrayWithSumAtLeastK();
+			var actual = s1.ShortestSubarray(arr, 663610288);
 			sw.Stop();
-			Console.WriteLine("DP {0}ms", sw.ElapsedMilliseconds);
+			Console.WriteLine("DP {0}ms, Loop {1}", sw.ElapsedMilliseconds, s1.LoopCount);
 			Assert.AreEqual(25813, actual);
 
 			sw.Restart();
-			new ShortestSubarrayWithSumAtLeastK().ShortestSubarrayBruteForce(arr, 663610288);
+			var s2 = new ShortestSubarrayWithSumAtLeastK();
+			s2.ShortestSubarrayBruteForce(arr, 663610288);
 			sw.Stop();
-			Console.WriteLine("BruteForce {0}ms", sw.ElapsedMilliseconds);
+			Console.WriteLine("BruteForce {0}ms, Loop {1}", sw.ElapsedMilliseconds, s2.LoopCount);
 		}
 	}
 }
