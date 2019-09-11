@@ -11,7 +11,7 @@ using Xunit.Sdk;
 namespace LeetCode.Tests
 {
 	[TestClass]
-	public class Amazon
+	public class Amazon1
 	{
 		public int minimumTime(int[] parts)
 		{
@@ -152,7 +152,7 @@ namespace LeetCode.Tests
 		[DataRow(58, new[] { 8, 4, 6, 12 })]
 		public void minimumTimeTest(int expected, int[] parts)
 		{
-			Assert.AreEqual(expected, new Amazon().minimumTime(parts));
+			Assert.AreEqual(expected, new Amazon1().minimumTime(parts));
 		}
 	}
 }
