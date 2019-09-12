@@ -128,6 +128,7 @@
     </Compile>
     <Compile Include="564-Find the Closest Palindrome.cs" />
     <Compile Include="MaxPointsOnALineTests.cs" />
+    <Compile Include="NextJump1.cs" />
     <Compile Include="NonDecreasingArray.cs" />
     <Compile Include="NonDecreasingArrayTests.cs">
       <DependentUpon>NonDecreasingArray.cs</DependentUpon>
