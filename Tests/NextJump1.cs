@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,35 @@ namespace LeetCode.Tests
 	[TestClass]
 	public class NextJump1
 	{
+		public static List<int> meanderingArray(List<int> unsorted)
+		{
+			var desending = new List<int>(unsorted);
+			unsorted.Sort((a, b) => b.CompareTo(a));
+			var ascending = unsorted;
+			desending.Sort((a, b) => a.CompareTo(b));
+
+			var result = new List<int>(unsorted.Count);
+			for (int i = 0; i < unsorted.Count; i++)
+			{
+				if (i % 2 == 1)
+					result.Add(ascending[i]);
+				else
+					result.Add(desending[i]);
+			}
+
+			return result;
+		}
+
+
+		[DataTestMethod]
+		[DataRow(new[] { 1, 3, 5, 2, 6, 7, 0 })]
+		public void meanderingArrayTest(int[] input)
+		{
+			meanderingArray(new List<int>(input));
+		}
+
+
+
 		/*
 		 * Complete the 'userDataWrong' function below.
 		 *
@@ -99,6 +129,39 @@ namespace LeetCode.Tests
 		public void maxMovesTest(int expected, string s, string t)
 		{
 			Assert.AreEqual(expected, maxMoves(s, t));
+		}
+
+		public void maxMovesSpeedTest()
+		{
+
+		}
+
+
+		[TestMethod]
+		public void maxMovesGenerationTest()
+		{
+			int length = 1000;
+			StringBuilder sb = new StringBuilder();
+			var letters = new[] { 'a', 'b' };
+			Random rand = new Random();
+			for (int i = 0; i < length; i++)
+				sb.Append(letters[rand.Next(letters.Length)]);
+
+			var needleLength = rand.Next(5);
+			var t = "";
+			for (int i = 0; i < needleLength; i++)
+				t += letters[rand.Next(letters.Length)];
+
+			var s = sb.ToString();
+			Console.WriteLine($"s= {s}");
+			Console.WriteLine($"t= {t}");
+			Stopwatch sw = Stopwatch.StartNew();
+
+			var actual = maxMoves(s, t);
+			sw.Stop();
+			Console.WriteLine($"{sw.ElapsedMilliseconds}ms");
+			Console.WriteLine(actual);
+
 		}
 
 	}
