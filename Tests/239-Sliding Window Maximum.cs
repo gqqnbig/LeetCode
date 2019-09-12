@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,41 +12,70 @@ namespace LeetCode.Tests
 	{
 		public int[] MaxSlidingWindow(int[] nums, int k)
 		{
+			if (nums.Length == 0)
+				return new int[0];
+			int[] result = new int[nums.Length - k + 1];
+			for (int i = 0; i < result.Length; i++)
+				result[i] = nums.Skip(i).Take(k).Max();
+
+			return result;
+		}
+
+		public int[] MaxSlidingWindowQueue(int[] nums, int k)
+		{
+			if (nums.Length == 0)
+				return new int[0];
 			int[] result = new int[nums.Length - k + 1];
 			//用链表实现单调队列，因为需要从两端移除元素。
 			//设尾端为peek。
-			//设该队列为单调递增队列，peek为最大值。
-			var monotoneQueue = new LinkedList<int>();
+			//设该队列为单调递减队列，First为最大值，Last为最大值。
+			var monotoneQueue = new LinkedList<Data>();
 
 			//初始化单调队列，同时也是处理初始窗口
+			for (int i = 0; i < k - 1; i++)
+				Enqueue(monotoneQueue, new Data(i, nums[i]));
 
-			for (int j = 0; j < result.Length; j++)
+			for (int i = 0; i < result.Length; i++)
 			{
-				for (int i = 0; i < k; i++)
-					Enqueue(monotoneQueue, nums[i]);
+				Enqueue(monotoneQueue, new Data(i + k - 1, nums[i + k - 1]));
+				result[i] = monotoneQueue.First.Value.Value;
 
-				result[j] = monotoneQueue.Last.Value;
-
-				monotoneQueue.RemoveFirst();
+				Debug.Assert(monotoneQueue.First.Value.Index >= i);
+				if (monotoneQueue.First.Value.Index == i)
+					monotoneQueue.RemoveFirst();
 			}
 
 			return result;
 		}
 
 		/// <summary>
-		/// Add an item to monotonic increasing queue. If the item is smaller than the peek, ie. <see cref="LinkedList{T}.Last"/>,
-		/// then peek will be added instead.
+		/// Add an item to monotonic decreasing queue. If the item is larger than <see cref="LinkedList{T}.Last"/>,
+		/// <see cref="LinkedList{T}.Last"/> will be removed.
 		/// </summary>
-		/// <param name="monotonicIncreasingQueue"></param>
+		/// <param name="monotonicDecreasingQueue"></param>
 		/// <param name="item"></param>
-		void Enqueue(LinkedList<int> monotonicIncreasingQueue, int item)
+		void Enqueue(LinkedList<Data> monotonicDecreasingQueue, Data item)
 		{
-			if (monotonicIncreasingQueue.Last?.Value > item)
-				monotonicIncreasingQueue.AddLast(monotonicIncreasingQueue.Last.Value);
-			else
-				monotonicIncreasingQueue.AddLast(item);
+			while (monotonicDecreasingQueue.Last?.Value.Value < item.Value)
+				monotonicDecreasingQueue.RemoveLast();
+
+			monotonicDecreasingQueue.AddLast(item);
+		}
+
+		[DebuggerDisplay("Index={Index}, Value={Value}")]
+		struct Data
+		{
+			public Data(int index, int value)
+			{
+				Index = index;
+				Value = value;
+			}
+			public int Index { get; }
+			public int Value { get; }
 		}
 	}
+
+
 
 	public class MonotoneQueue : IEnumerable<int>
 	{
