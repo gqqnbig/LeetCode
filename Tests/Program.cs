@@ -14,9 +14,7 @@ namespace LeetCode
 	{
 		public static void Main(string[] args)
 		{
-			int[] v=new int[]{1,2,4,4};
-			Console.WriteLine(ObjectToCode.ComplexObjectToPseudoCode(v));
-
+			var actual = new LongestDuplicateSubstring().LongestDupSubstring(Resource1.P1044LongTestData);
 			Console.ReadKey();
 		}
 

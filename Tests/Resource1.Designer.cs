@@ -61,6 +61,15 @@ namespace LeetCode.Tests {
         }
         
         /// <summary>
+        ///   查找类似 &quot;baaddcedaabeeebbddcdcdbaedcadbcbedddbbcbcbcdddbdddbdebecedabbdccdabbaaeedcbcacbcdebebaeeecaaddeceabbcaddabeceaceebedcabbcdcdbabdeeeacaceabaaaaeaeabbdecbdebedcedacbecccaeacbadecedbacbcdcebddebabbdddcdbbdccbdaccacaccbaabebcdbeadbdeebddbdddbabbeaeeabbdbcbcaaccdcabaebeadcaddeedcabebcbdbbbcdeeabbbadcbbadddadaddeacdbbbbecdadababacabcceaccdaddbcbbbccbdddacadcddddedeaeabebcdcaccceeecbdcaeebeabedbececeadbdcdcedadbbebedaaeacbedecddcabeddbadaaeceedbbedaadcbdebcbbbdcbeccaadeacdbebaedadadddbebccacecbcecdeeadaebbdbaeeae [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        /// </summary>
+        internal static string P1044LongTestData {
+            get {
+                return ResourceManager.GetString("P1044LongTestData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 -32663,-36605,66224,14387,51418,30434,18347,98126,-8323,-33339,36769,79109,-23194,-9896,67990,-11414,-4629,21792,46755,84877,69128,-49061,79216,28735,42774,92620,49628,77186,86172,87886,77863,90207,-8642,52710,-2221,-19651,68274,85289,50032,-20487,-21518,5867,76156,79318,58624,74509,47490,96533,63340,-26205,62570,43318,62258,65898,72308,-4536,85462,-22971,84011,40816,98631,73874,-44803,-1863,79146,64637,-31262,-37111,26479,15333,-6392,-42227,-4596,71074,98010,10609,88515,-36203,-6087,44768,25376,-11025,-328 [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string P862LongTestData {

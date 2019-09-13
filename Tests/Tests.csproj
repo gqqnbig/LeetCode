@@ -40,6 +40,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -94,6 +95,10 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="1044-Longest Duplicate Substring-Tests.cs" >
+		<DependentUpon>1044-Longest Duplicate Substring.cs</DependentUpon>
+	</Compile>
+    <Compile Include="1044-Longest Duplicate Substring.cs" />
     <Compile Include="166-Fraction to Recurring Decimal-Tests.cs">
       <DependentUpon>166-Fraction to Recurring Decimal.cs</DependentUpon>
     </Compile>
@@ -118,9 +123,9 @@
       <DependentUpon>866-Prime Palindrome.cs</DependentUpon>
     </Compile>
     <Compile Include="866-Prime Palindrome.cs" />
-	<Compile Include="91-Decode Ways-Tests.cs">
-		<DependentUpon>91-Decode Ways.cs</DependentUpon>
-	</Compile>
+    <Compile Include="91-Decode Ways-Tests.cs">
+      <DependentUpon>91-Decode Ways.cs</DependentUpon>
+    </Compile>
     <Compile Include="91-Decode Ways.cs" />
     <Compile Include="Amazon1.cs" />
     <Compile Include="Amazon2.cs" />
