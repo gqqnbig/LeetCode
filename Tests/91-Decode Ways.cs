@@ -10,51 +10,28 @@ namespace LeetCode.Tests
 	{
 		public int NumDecodings(string s)
 		{
-			var waysCache = Enumerable.Repeat(-1, s.Length + 1).ToArray();
+			var waysCache = new int[s.Length + 1];
 			waysCache[s.Length] = 1;
-			NumDecodings(s, 0, waysCache);
+			for (int i = s.Length - 1; i >= 0; i--)
+			{
+				if (IsChar(s[i]))
+					waysCache[i]+=waysCache[i+1];
+
+				if (i - 1 >= 0 && IsChar(s[i - 1], s[i]))
+					waysCache[i - 1] += waysCache[i + 1];
+
+			}
+
 			return waysCache[0];
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="s"></param>
-		/// <param name="index"></param>
-		/// <param name="waysCache"></param>
-		/// <returns>s从index起，是不是一个合法的编码</returns>
-		bool NumDecodings(string s, int index, int[] waysCache)
+		static bool IsChar(char a)
 		{
-			//if (s.Length == index)
-			//	return true;
-
-			if (waysCache[index] > -1)
-				return true;
-
-			//开始处理waysCache[index]
-			waysCache[index] = 0;
-			if (index == s.Length - 1) //只能尝试一种解释
-			{
-				if (IsChar(s[index]))
-					waysCache[index] = 1;
-			}
-			else
-			{
-				if (IsChar(s[index]) && NumDecodings(s, index + 1, waysCache))
-					waysCache[index] += waysCache[index + 1];
-
-				if (IsChar(s[index], s[index + 1]) && NumDecodings(s, index + 2, waysCache))
-					waysCache[index] +=  waysCache[index + 2];
-			}
-
-			return waysCache[index] > 0;
+			return a > '0' && a <= '9';
 		}
 
-		bool IsChar(char a, char b = '\0')
+		static bool IsChar(char a, char b)
 		{
-			if (b == '\0' && a > '0' && a <= '9')
-				return true;
-
 			if (a == '1')
 				return true;
 			if (a == '2' && b >= '0' && b <= '6')
