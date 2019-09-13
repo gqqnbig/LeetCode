@@ -29,5 +29,16 @@ namespace LeetCode.Tests
 			Console.WriteLine("{0}ms", sw.ElapsedMilliseconds);
 			Assert.AreEqual("ddbcddbabee", actual);
 		}
+
+		[TestMethod]
+		public void LongestDupSubstringSpeedTest2()
+		{
+			var input = Resource1.P1044Input2;
+			Stopwatch sw = Stopwatch.StartNew();
+			var actual = new LongestDuplicateSubstring().LongestDupSubstring(input);
+			sw.Stop();
+			Console.WriteLine("{0}ms", sw.ElapsedMilliseconds);
+			//Assert.AreEqual("ddbcddbabee", actual);
+		}
 	}
 }

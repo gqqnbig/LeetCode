@@ -61,6 +61,15 @@ namespace LeetCode.Tests {
         }
         
         /// <summary>
+        ///   查找类似 bwvzoubsovtdpokbjgubpkzsdmxpdxwrkjzjbhcuvppjowoaapfpaqmgpkflwookqdujdfqsifdbkmwqfumwhotpdmevmshumjcdquspnihgceaedgxjgrtjdxqacznaluiiwrivaulamzyecdpyfyxmiavwkqvbybabmshszoslhxzhmaqtvhbnznnxuyctrbywifcuguutkdxchpyxurmskwbygnbtatoxwesmtzchjlrnqsjxanoemmzsqcraykiszrieoaqcwcwlyorrcvlamxztujsglqcwjmqvcmmuwwjgkdfhfxfahlefserldejymbhgdddlwjllantqxeivdbrsbjdcsgrcngejbfvwdjbaffvarzdkizozlszqvzsyszqklvinaypeqyppcyafzqkdlreddrmbxwiikymgcqaghptuvbgkoebirotkfdxcfxeykqvdqlbmnbpgumksbsdwdbyqfdwdqpfustxqorwpxyatjuiocqjytiqz [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        /// </summary>
+        internal static string P1044Input2 {
+            get {
+                return ResourceManager.GetString("P1044Input2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 baaddcedaabeeebbddcdcdbaedcadbcbedddbbcbcbcdddbdddbdebecedabbdccdabbaaeedcbcacbcdebebaeeecaaddeceabbcaddabeceaceebedcabbcdcdbabdeeeacaceabaaaaeaeabbdecbdebedcedacbecccaeacbadecedbacbcdcebddebabbdddcdbbdccbdaccacaccbaabebcdbeadbdeebddbdddbabbeaeeabbdbcbcaaccdcabaebeadcaddeedcabebcbdbbbcdeeabbbadcbbadddadaddeacdbbbbecdadababacabcceaccdaddbcbbbccbdddacadcddddedeaeabebcdcaccceeecbdcaeebeabedbececeadbdcdcedadbbebedaaeacbedecddcabeddbadaaeceedbbedaadcbdebcbbbdcbeccaadeacdbebaedadadddbebccacecbcecdeeadaebbdbaeeaee [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string P1044LongTestData {

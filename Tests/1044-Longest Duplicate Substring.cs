@@ -9,28 +9,72 @@ namespace LeetCode.Tests
 {
 	class LongestDuplicateSubstring
 	{
+
 		public string LongestDupSubstring(string S)
+		{
+			string longestDup = "";
+			int lowerBound = longestDup.Length;//成功的length
+			int upperBound = S.Length;
+
+			while (lowerBound < upperBound - 1)
+			{
+				int probingLength = (lowerBound + upperBound) / 2;
+				var v = FindDupWithLength(S, probingLength);
+				if (v.Length > 0)
+				{
+					longestDup = v;
+
+					lowerBound = probingLength;
+				}
+				else
+				{
+					upperBound = probingLength;
+				}
+			}
+
+			return longestDup;
+
+		}
+		/// <summary>
+		/// Check if there is a substring with subLength in S
+		/// </summary>
+		/// <param name="S"></param>
+		/// <param name="subLength"></param>
+		/// <returns></returns>
+		static string FindDupWithLength(string S, int subLength)
+		{
+			HashSet<string> set = new HashSet<string>(S.Length - subLength + 1);
+			for (int i = 0; i < S.Length - subLength + 1; i++)
+			{
+				var sub = S.Substring(i, subLength);
+				if (set.Contains(sub))
+					return sub;
+				else
+					set.Add(sub);
+			}
+
+			return string.Empty;
+		}
+
+		public string LongestDupSubstringMine(string S)
 		{
 			string maxSub = "";
 			int max = 0;
 
-			Dictionary<string, int> stringIndexOf = new Dictionary<string, int>();
+			//HashSet<string> notFoundStrings=new HashSet<string>();
+			//Dictionary<string, int> stringIndexOf = new Dictionary<string, int>();
 			for (int i = 0; i < S.Length; i++)
 			{
-				var remaining = S.Substring(i + 1);
-				int lastFoundIndex = 0;
+				//var remaining = S.Substring(i + 1);
+				int lastFoundIndex = i + 1;
 				for (int l = max + 1; l < S.Length + 1 - i; l++)
 				{
 					var sub = S.Substring(i, l);//有可能反复查找同一个子字符串
-					var n = remaining.IndexOf(sub, lastFoundIndex);
-					//if (stringIndexOf.TryGetValue(sub, out var n) == false ||
-					//	n != -1 && n <= i) //n是以前的记录值
-					//{
-					//	n = remaining.IndexOf(sub);
-					//	//Console.WriteLine(sub);
+												//Debug.Assert(notFoundStrings.Contains(sub) == false);
+												//notFoundStrings.Add(sub);
 
-					//	stringIndexOf[sub] = n;
-					//}
+					//Console.WriteLine(sub);
+					var n = S.IndexOf(sub, lastFoundIndex);
 
 					if (n > -1)
 					{
