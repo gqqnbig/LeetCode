@@ -95,9 +95,9 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="1044-Longest Duplicate Substring-Tests.cs" >
-		<DependentUpon>1044-Longest Duplicate Substring.cs</DependentUpon>
-	</Compile>
+    <Compile Include="1044-Longest Duplicate Substring-Tests.cs">
+      <DependentUpon>1044-Longest Duplicate Substring.cs</DependentUpon>
+    </Compile>
     <Compile Include="1044-Longest Duplicate Substring.cs" />
     <Compile Include="166-Fraction to Recurring Decimal-Tests.cs">
       <DependentUpon>166-Fraction to Recurring Decimal.cs</DependentUpon>
@@ -171,6 +171,7 @@
     <EmbeddedResource Include="Resource1.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resource1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <Choose>

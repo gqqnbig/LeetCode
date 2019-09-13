@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,8 +22,12 @@ namespace LeetCode.Tests
 		[TestMethod]
 		public void LongestDupSubstringSpeedTest()
 		{
-			var actual = new LongestDuplicateSubstring().LongestDupSubstring(Resource1.P1044LongTestData);
-			Assert.AreEqual("ddbcddbabee",actual);
+			var input = Resource1.P1044LongTestData;
+			Stopwatch sw = Stopwatch.StartNew();
+			var actual = new LongestDuplicateSubstring().LongestDupSubstring(input);
+			sw.Stop();
+			Console.WriteLine("{0}ms", sw.ElapsedMilliseconds);
+			Assert.AreEqual("ddbcddbabee", actual);
 		}
 	}
 }

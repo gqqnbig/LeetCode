@@ -18,18 +18,19 @@ namespace LeetCode.Tests
 			for (int i = 0; i < S.Length; i++)
 			{
 				var remaining = S.Substring(i + 1);
+				int lastFoundIndex = 0;
 				for (int l = max + 1; l < S.Length + 1 - i; l++)
 				{
 					var sub = S.Substring(i, l);//有可能反复查找同一个子字符串
-					if (stringIndexOf.TryGetValue(sub, out var n) == false ||
-						n != -1 && n <= i) //n是以前的记录值
-					{
-						n = remaining.IndexOf(sub);
+					var n = remaining.IndexOf(sub, lastFoundIndex);
+					//if (stringIndexOf.TryGetValue(sub, out var n) == false ||
+					//	n != -1 && n <= i) //n是以前的记录值
+					//{
+					//	n = remaining.IndexOf(sub);
+					//	//Console.WriteLine(sub);
 
-						//Console.WriteLine(sub);
-
-						stringIndexOf[sub] = n;
-					}
+					//	stringIndexOf[sub] = n;
+					//}
 
 					if (n > -1)
 					{
@@ -38,6 +39,7 @@ namespace LeetCode.Tests
 						Debug.Assert(l > max);
 						max = l;
 						maxSub = sub;
+						lastFoundIndex = n;
 					}
 					else
 						break; //如果已经找不到一个短字符串了，把这个字符串变长，就更找不到了
