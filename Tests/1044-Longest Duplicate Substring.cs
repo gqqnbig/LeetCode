@@ -41,57 +41,69 @@ namespace LeetCode.Tests
 		/// <param name="S"></param>
 		/// <param name="subLength"></param>
 		/// <returns></returns>
-		static string FindDupWithLength(string S, int subLength)
+		internal static string FindDupWithLength(string S, int subLength)
 		{
-			HashSet<string> set = new HashSet<string>(S.Length - subLength + 1);
-			for (int i = 0; i < S.Length - subLength + 1; i++)
+			HashSet<int> set = new HashSet<int>(S.Length - subLength + 1);
+			int hash = GetHash(S, 0, subLength);
+			const int @base = 26;
+			//for (int i = 0; i < subLength; i++)
+			//	hash = unchecked(hash * @base + S[i] - 'a');
+
+
+			set.Add(hash);
+
+			int p = 1;
+			//防止溢出
+			if (Math.Log(int.MaxValue, @base) >= subLength - 1)
+				p = (int)Math.Pow(@base, subLength - 1);
+			else
 			{
-				var sub = S.Substring(i, subLength);
-				if (set.Contains(sub))
-					return sub;
+				for (int i = 0; i < subLength - 1; i++)
+					p = unchecked(p * @base);
+			}
+
+			for (int i = subLength; i < S.Length; i++)
+			{
+				/* i-1是子字符串的末尾，把子字符串头的第一个字符的hash减掉
+				 *
+				 * abcd
+				 *    |
+				 *    i
+				*/
+				hash = unchecked(hash - (S[i - subLength] - 'a') * p);
+				Debug.Assert(hash == GetHash(S, i - subLength + 1, subLength - 1));
+
+				hash = unchecked(hash * @base + S[i] - 'a');
+				/* 设subLength=3，abc为已经处理过的字符串。
+				 *
+				 * abcd
+				 * ~~~|
+				 *    i
+				*/
+				if (set.Contains(hash))
+				{
+					var sub = S.Substring(i - subLength + 1, subLength);
+					if (S.Substring(0, i).IndexOf(sub) > -1)
+					{
+						return sub;
+					}
+					else
+						set.Add(hash);
+				}
 				else
-					set.Add(sub);
+					set.Add(hash);
 			}
 
 			return string.Empty;
 		}
 
-		public string LongestDupSubstringMine(string S)
+		static int GetHash(string s, int start, int length)
 		{
-			string maxSub = "";
-			int max = 0;
-
-			//HashSet<string> notFoundStrings=new HashSet<string>();
-			//Dictionary<string, int> stringIndexOf = new Dictionary<string, int>();
-			for (int i = 0; i < S.Length; i++)
-			{
-				//var remaining = S.Substring(i + 1);
-				int lastFoundIndex = i + 1;
-				for (int l = max + 1; l < S.Length + 1 - i; l++)
-				{
-					var sub = S.Substring(i, l);//有可能反复查找同一个子字符串
-												//Debug.Assert(notFoundStrings.Contains(sub) == false);
-												//notFoundStrings.Add(sub);
-
-					//Console.WriteLine(sub);
-					var n = S.IndexOf(sub, lastFoundIndex);
-
-					if (n > -1)
-					{
-						//因为其实条件 l = Math.Max(1, max)
-						// sub.Length一定大于max
-						Debug.Assert(l > max);
-						max = l;
-						maxSub = sub;
-						lastFoundIndex = n;
-					}
-					else
-						break; //如果已经找不到一个短字符串了，把这个字符串变长，就更找不到了
-				}
-			}
-
-			return maxSub;
-
+			int hash = 0;
+			const int @base = 26;
+			for (int i = start; i < start + length; i++)
+				hash = unchecked(hash * @base + s[i] - 'a');
+			return hash;
 		}
 	}
 }

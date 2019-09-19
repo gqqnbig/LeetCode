@@ -40,5 +40,11 @@ namespace LeetCode.Tests
 			Console.WriteLine("{0}ms", sw.ElapsedMilliseconds);
 			//Assert.AreEqual("ddbcddbabee", actual);
 		}
+
+		[TestMethod]
+		public void FindDupWithLengthTest()
+		{
+			Assert.AreEqual(new string('b', 30), LongestDuplicateSubstring.FindDupWithLength(new string('b', 100), 30));
+		}
 	}
 }
