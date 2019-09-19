@@ -46,20 +46,21 @@ namespace LeetCode.Tests
 			HashSet<int> set = new HashSet<int>(S.Length - subLength + 1);
 			int hash = GetHash(S, 0, subLength);
 			const int @base = 26;
-			//for (int i = 0; i < subLength; i++)
-			//	hash = unchecked(hash * @base + S[i] - 'a');
-
-
 			set.Add(hash);
 
 			int p = 1;
+			bool hasOverflow;
 			//防止溢出
 			if (Math.Log(int.MaxValue, @base) >= subLength - 1)
+			{
 				p = (int)Math.Pow(@base, subLength - 1);
+				hasOverflow = false;
+			}
 			else
 			{
 				for (int i = 0; i < subLength - 1; i++)
 					p = unchecked(p * @base);
+				hasOverflow = true;
 			}
 
 			for (int i = subLength; i < S.Length; i++)
@@ -83,12 +84,13 @@ namespace LeetCode.Tests
 				if (set.Contains(hash))
 				{
 					var sub = S.Substring(i - subLength + 1, subLength);
-					if (S.Substring(0, i).IndexOf(sub) > -1)
-					{
+					if (hasOverflow == false || S.Substring(0, i).IndexOf(sub) > -1)
 						return sub;
-					}
 					else
+					{
+						Console.WriteLine("hash collision");
 						set.Add(hash);
+					}
 				}
 				else
 					set.Add(hash);
