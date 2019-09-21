@@ -22,7 +22,7 @@ namespace LeetCode.Tests
 			if (expected != actual)
 			{
 				var newArray = Enumerable.Repeat(arr, k).SelectMany(n => n);
-				Console.WriteLine(KConcatenationMaximumSum.MaxSubArray(newArray));
+				Console.WriteLine(KConcatenationMaximumSum.MaxSubArray(newArray.ToArray()));
 			}
 
 			Assert.AreEqual(expected, actual);
@@ -43,7 +43,7 @@ namespace LeetCode.Tests
 				}
 
 				int k = rand.Next(10);
-				int expected = KConcatenationMaximumSum.MaxSubArray(Enumerable.Repeat(arr, k).SelectMany(n => n));
+				int expected = KConcatenationMaximumSum.MaxSubArray(Enumerable.Repeat(arr, k).SelectMany(n => n).ToArray());
 				var solution = new KConcatenationMaximumSum();
 
 

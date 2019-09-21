@@ -99,9 +99,9 @@
       <DependentUpon>1044-Longest Duplicate Substring.cs</DependentUpon>
     </Compile>
     <Compile Include="1044-Longest Duplicate Substring.cs" />
-      <Compile Include="1191-K-Concatenation Maximum Sum-Tests.cs">
-        <DependentUpon>1191-K-Concatenation Maximum Sum.cs</DependentUpon>
-      </Compile>
+    <Compile Include="1191-K-Concatenation Maximum Sum-Tests.cs">
+      <DependentUpon>1191-K-Concatenation Maximum Sum.cs</DependentUpon>
+    </Compile>
     <Compile Include="1191-K-Concatenation Maximum Sum.cs" />
     <Compile Include="166-Fraction to Recurring Decimal-Tests.cs">
       <DependentUpon>166-Fraction to Recurring Decimal.cs</DependentUpon>
@@ -113,6 +113,10 @@
     <Compile Include="220-Contains Duplicate III.cs" />
     <Compile Include="239-Sliding Window Maximum-Tests.cs" />
     <Compile Include="239-Sliding Window Maximum.cs" />
+      <Compile Include="44-Wildcard Matching-Tests.cs" >
+        <DependentUpon>44-Wildcard Matching.cs</DependentUpon>
+      </Compile>
+    <Compile Include="44-Wildcard Matching.cs" />
     <Compile Include="468-Validate IP Address-Tests.cs" />
     <Compile Include="468-Validate IP Address.cs" />
     <Compile Include="707-Design Linked List-Tests.cs">

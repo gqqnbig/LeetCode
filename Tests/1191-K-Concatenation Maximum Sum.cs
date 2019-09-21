@@ -8,7 +8,7 @@ namespace LeetCode.Tests
 {
 	class KConcatenationMaximumSum
 	{
-		private static int modulo = (int) (Math.Pow(10, 9) + 7);
+		private static readonly int modulo = (int) (Math.Pow(10, 9) + 7);
 
 
 		public int KConcatenationMaxSum(int[] arr, int k)
@@ -34,16 +34,16 @@ namespace LeetCode.Tests
 		/// </summary>
 		/// <param name="arr"></param>
 		/// <returns></returns>
-		public static int MaxSubArray(IEnumerable<int> arr)
+		public static int MaxSubArray(int[] arr)
 		{
 			long maxEndingThis = 0;
 			long max = 0;
-			int i = 0;
-			foreach (var n in arr)
+			//for loop is faster than for each.
+			for (var i = 0; i < arr.Length; i++)
 			{
+				var n = arr[i];
 				maxEndingThis = Math.Max(0, maxEndingThis + n) % modulo;
 				max = Math.Max(max, maxEndingThis);
-				i++;
 			}
 
 			return (int) max;
@@ -58,8 +58,9 @@ namespace LeetCode.Tests
 		{
 			long maxEndingThis = 0;
 			long max = 0;
-			foreach (var n in arr)
+			for (var i = 0; i < arr.Length; i++)
 			{
+				var n = arr[i];
 				maxEndingThis = Math.Max(0, maxEndingThis + n) % modulo;
 				max = Math.Max(max, maxEndingThis);
 			}
@@ -67,11 +68,13 @@ namespace LeetCode.Tests
 			maxEndingThis = Math.Max(0, maxEndingThis + next) % modulo;
 			max = Math.Max(max, maxEndingThis);
 
-			foreach (var n in arr)
+			for (var i = 0; i < arr.Length; i++)
 			{
+				var n = arr[i];
 				maxEndingThis = Math.Max(0, maxEndingThis + n) % modulo;
 				max = Math.Max(max, maxEndingThis);
 			}
+
 			return (int)max;
 		}
 	}
