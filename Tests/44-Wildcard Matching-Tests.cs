@@ -11,16 +11,17 @@ namespace LeetCode.Tests
 	public class WildcardMatchingTests
 	{
 		[DataTestMethod]
+		[DataRow(true,"aab", "a?b")]
+		[DataRow(true,"aa", "aa")]
+		[DataRow(false,"aa", "a")]
+		[DataRow(true,"ab", "a*b")]
 		[DataRow(false,"acdcb", "a*c?b")]
 		[DataRow(true,"adceb", "*a*b")]
 		[DataRow(false,"cb", "?a")]
 		[DataRow(true,"aa", "*")]
-		[DataRow(false,"aa", "a")]
 		[DataRow(false,"cab", "a*b")]
-		[DataRow(true,"ab", "a*b")]
 		[DataRow(true,"aaab", "a*b")]
 		[DataRow(true,"aab", "a*b")]
-		[DataRow(true,"aab", "a?b")]
 		[DataRow(false,"aaa", "a?b")]
 		[DataRow(false,"", "?")]
 		[DataRow(true,"a", "?")]
@@ -39,7 +40,8 @@ namespace LeetCode.Tests
 		[TestMethod]
 		public void SpeedTest2()
 		{
-			new WildcardMatching().IsMatch("abbabaaabbabbaababbabbbbbabbbabbbabaaaaababababbbabababaabbababaabbbbbbaaaabababbbaabbbbaabbbbababababbaabbaababaabbbababababbbbaaabbbbbabaaaabbababbbbaababaabbababbbbbababbbabaaaaaaaabbbbbaabaaababaaaabb",
+			new WildcardMatching().IsMatch(
+			"abbabaaabbabbaababbabbbbbabbbabbbabaaaaababababbbabababaabbababaabbbbbbaaaabababbbaabbbbaabbbbababababbaabbaababaabbbababababbbbaaabbbbbabaaaabbababbbbaababaabbababbbbbababbbabaaaaaaaabbbbbaabaaababaaaabb",
 			"**aa*****ba*a*bb**aa*ab****a*aaaaaa***a*aaaa**bbabb*b*b**aaaaaaaaa*a********ba*bbb***a*ba*bb*bb**a*b*bb");
 		}
 	}
