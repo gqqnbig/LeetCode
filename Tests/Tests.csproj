@@ -99,6 +99,10 @@
       <DependentUpon>1044-Longest Duplicate Substring.cs</DependentUpon>
     </Compile>
     <Compile Include="1044-Longest Duplicate Substring.cs" />
+      <Compile Include="1191-K-Concatenation Maximum Sum-Tests.cs">
+        <DependentUpon>1191-K-Concatenation Maximum Sum.cs</DependentUpon>
+      </Compile>
+    <Compile Include="1191-K-Concatenation Maximum Sum.cs" />
     <Compile Include="166-Fraction to Recurring Decimal-Tests.cs">
       <DependentUpon>166-Fraction to Recurring Decimal.cs</DependentUpon>
     </Compile>

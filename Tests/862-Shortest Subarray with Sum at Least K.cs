@@ -26,7 +26,7 @@ namespace LeetCode.Tests
 
 			for (int i = A.Length - 2; i >= 0; i--)
 			{
-				if (A[i] > A[i] + stickyData[i + 1].Sum)
+				if (stickyData[i + 1].Sum < 0)
 					stickyData[i] = new SumLength { Sum = A[i], Length = 1 };
 				else
 				{
