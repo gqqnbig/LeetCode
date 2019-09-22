@@ -12,27 +12,23 @@ namespace LeetCode.Tests
 	{
 		const byte FixedMatch = 3;
 		const byte PossibleMatch = 2;
-		const byte NoMatch = 1;
 
 		public bool IsMatch(string s, string pattern)
 		{
-			string p = pattern;
-			do
-			{
-				pattern = p;
-				p = pattern.Replace("**", "*");
-			} while (p != pattern);
-
 			//table[x,y]表示p[x]在s[y]的左边是否可以匹配
-			byte[,] table = new byte[p.Length + 1, s.Length + 1];
-			table[p.Length, s.Length] = FixedMatch;
+			byte[,] table = new byte[pattern.Length + 1, s.Length + 1];
+			table[pattern.Length, s.Length] = FixedMatch;
 			int lastFixedMatch = s.Length;
-			for (int pi = p.Length - 1; pi >= 0; pi--)
+			for (int pi = pattern.Length - 1; pi >= 0; pi--)
 			{
 				char c = pattern[pi];
 
 				switch (c)
 				{
+					case '*':
+						for (int i = lastFixedMatch; i >= 0; i--)
+							table[pi, i] = PossibleMatch;
+						break;
 					case '?':
 						for (int i = lastFixedMatch - 1; i >= 0; i--)
 						{
@@ -41,10 +37,6 @@ namespace LeetCode.Tests
 						}
 						lastFixedMatch = FixLastFixedMatch(pi, lastFixedMatch - 1, table);
 
-						break;
-					case '*':
-						for (int i = lastFixedMatch; i >= 0; i--)
-							table[pi, i] = PossibleMatch;
 						break;
 					default:
 						//c是字符
