@@ -44,7 +44,7 @@ namespace LeetCode.Tests
 						{
 							for (int i = lastFixedMatch - 1; i >= 0; i--)
 							{
-								if (i + 1 < s.Length && table[pi + 1, i + 1] >= FixedMatch)
+								if (i + 1 < s.Length && table[pi + 1, i + 1] >= PossibleMatch)
 									table[pi, i] = FixedMatch;
 							}
 						}

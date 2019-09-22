@@ -11,6 +11,11 @@ namespace LeetCode.Tests
 	public class WildcardMatchingTests
 	{
 		[DataTestMethod]
+		[DataRow(true,"", "")]
+		[DataRow(true,"ab", "*?b")]
+		[DataRow(true,"ab", "a*?")]
+		[DataRow(true,"ab", "*?")]
+		[DataRow(true,"ab", "?*")]
 		[DataRow(true,"aab", "a?b")]
 		[DataRow(true,"aa", "aa")]
 		[DataRow(false,"aa", "a")]
