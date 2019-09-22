@@ -24,7 +24,8 @@ namespace LeetCode.Tests
 			} while (p != pattern);
 
 			//table[x,y]表示p[x]在s[y]的左边是否可以匹配
-			byte[,] table = new byte[p.Length, s.Length];
+			byte[,] table = new byte[p.Length + 1, s.Length + 1];
+			table[p.Length, s.Length] = FixedMatch;
 			int lastFixedMatch = s.Length;
 			for (int pi = p.Length - 1; pi >= 0; pi--)
 			{
@@ -33,52 +34,24 @@ namespace LeetCode.Tests
 				switch (c)
 				{
 					case '?':
-						if (pi == p.Length - 1)
+						for (int i = lastFixedMatch - 1; i >= 0; i--)
 						{
-							if (s.Length - 1 >= 0)
-								table[pi, s.Length - 1] = FixedMatch;
-							else
-								return false;
-						}
-						else
-						{
-							for (int i = lastFixedMatch - 1; i >= 0; i--)
-							{
-								if (i + 1 < s.Length && table[pi + 1, i + 1] >= PossibleMatch)
-									table[pi, i] = FixedMatch;
-							}
+							if (table[pi + 1, i + 1] >= PossibleMatch)
+								table[pi, i] = FixedMatch;
 						}
 						lastFixedMatch = FixLastFixedMatch(pi, lastFixedMatch - 1, table);
 
 						break;
 					case '*':
-						for (int i = Math.Min(lastFixedMatch, s.Length - 1); i >= 0; i--)
+						for (int i = lastFixedMatch; i >= 0; i--)
 							table[pi, i] = PossibleMatch;
 						break;
 					default:
 						//c是字符
-						if (pi == p.Length - 1)
+						for (int i = lastFixedMatch - 1; i >= 0; i--)
 						{
-							if (s.Length - 1 >= 0 && c == s[s.Length - 1])
-								table[pi, s.Length - 1] = FixedMatch;
-							else
-								return false;
-						}
-						else
-						{
-							for (int i = lastFixedMatch - 1; i >= 0; i--)
-							{
-								if (i + 1 < s.Length && table[pi + 1, i + 1] >= PossibleMatch && c == s[i])
-									table[pi, i] = FixedMatch;
-								else if (table[pi + 1, i] == FixedMatch)
-								{
-									if (i - 1 >= 0 && c == s[i - 1])
-										table[pi, i - 1] = FixedMatch;
-									else
-										return false;
-								}
-							}
-
+							if (table[pi + 1, i + 1] >= PossibleMatch && c == s[i])
+								table[pi, i] = FixedMatch;
 						}
 						lastFixedMatch = FixLastFixedMatch(pi, lastFixedMatch - 1, table);
 						break;
