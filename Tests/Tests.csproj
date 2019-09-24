@@ -113,9 +113,9 @@
     <Compile Include="220-Contains Duplicate III.cs" />
     <Compile Include="239-Sliding Window Maximum-Tests.cs" />
     <Compile Include="239-Sliding Window Maximum.cs" />
-      <Compile Include="44-Wildcard Matching-Tests.cs" >
-        <DependentUpon>44-Wildcard Matching.cs</DependentUpon>
-      </Compile>
+    <Compile Include="44-Wildcard Matching-Tests.cs">
+      <DependentUpon>44-Wildcard Matching.cs</DependentUpon>
+    </Compile>
     <Compile Include="44-Wildcard Matching.cs" />
     <Compile Include="468-Validate IP Address-Tests.cs" />
     <Compile Include="468-Validate IP Address.cs" />
@@ -131,6 +131,10 @@
       <DependentUpon>866-Prime Palindrome.cs</DependentUpon>
     </Compile>
     <Compile Include="866-Prime Palindrome.cs" />
+	<Compile Include="880-Decoded String at Index-Tests.cs" >
+		<DependentUpon>880-Decoded String at Index.cs</DependentUpon>
+	</Compile>
+    <Compile Include="880-Decoded String at Index.cs" />
     <Compile Include="91-Decode Ways-Tests.cs">
       <DependentUpon>91-Decode Ways.cs</DependentUpon>
     </Compile>
