@@ -36,7 +36,8 @@ namespace LeetCode.Tests
 			Array.Sort(arr, Comparer<Item>.Create((a, b) => b.Value.CompareTo(a.Value)));
 			Debug.Assert(arr[0].Value >= arr[arr.Length - 1].Value, "降序排列");
 
-			var subList = CreateSubList(arr);
+			var subListIndex = FindSubList(arr, arr[0].Value / 2f);
+
 
 			int count = 0;
 			for (int i = 0; i < arr.Length; i++)
@@ -44,56 +45,41 @@ namespace LeetCode.Tests
 				var n = arr[i].Value / 2f;
 				var index = arr[i].Index;
 
-				var subListCurrent = subList.First;
-				while (subListCurrent != null && subListCurrent.Value.Value >= n)
-				{
-					var next = subListCurrent.Next;
-					subList.Remove(subListCurrent);
-					subListCurrent = next;
-				}
+				for (; subListIndex < arr.Length && arr[subListIndex].Value >= n; subListIndex++)
+				{ }
 
-
-				subListCurrent = subList.First;
 				//排除索引不合要求的项目
-				while (subListCurrent != null)
+				//count += arr.Skip(subListIndex).Count(a => a.Index >= index);
+				for (int j = subListIndex; j < arr.Length; j++)
 				{
-					var next = subListCurrent.Next;
-					if (subListCurrent.Value.Index >= index)
+					if (arr[j].Index >= index)
 						count++;
-					subListCurrent = next;
 				}
 			}
 
 			return count;
 		}
 
-		private static LinkedList<Item> CreateSubList(Item[] arr)
-		{
-			var subListStart = 1;
-
-			var n = arr[0].Value / 2f;
-			for (; subListStart < arr.Length && arr[subListStart].Value >= n; subListStart++) { }
-
-			LinkedList<Item> subList = new LinkedList<Item>(arr.Skip(subListStart));
-			return subList;
-		}
-
 		/// <summary>
-		/// 从链接表的指定节点开始复制
+		/// 给定一个降序数组，查找第一个值小于f的索引
 		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="node"></param>
+		/// <param name="arr"></param>
+		/// <param name="f"></param>
 		/// <returns></returns>
-		LinkedList<T> Clone<T>(LinkedListNode<T> node)
+		private static int FindSubList(Item[] arr, float f)
 		{
-			var list = new LinkedList<T>();
-			while (node != null)
+			int start = 0;
+			int end = arr.Length - 1;
+			while (start < end - 1)
 			{
-				list.AddLast(node.Value);
-				node = node.Next;
+				int middle = (start + end) / 2;
+				if (arr[middle].Value > f)
+					start = middle;
+				else
+					end = middle;
 			}
 
-			return list;
+			return end;
 		}
 
 		[DebuggerDisplay("[{Index}]={Value}")]
