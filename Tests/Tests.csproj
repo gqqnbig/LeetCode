@@ -113,6 +113,10 @@
     <Compile Include="220-Contains Duplicate III.cs" />
     <Compile Include="239-Sliding Window Maximum-Tests.cs" />
     <Compile Include="239-Sliding Window Maximum.cs" />
+    <Compile Include="307-Range Sum Query - Mutable-Tests.cs" >
+      <DependentUpon>307-Range Sum Query - Mutable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="307-Range Sum Query - Mutable.cs" />
     <Compile Include="44-Wildcard Matching-Tests.cs">
       <DependentUpon>44-Wildcard Matching.cs</DependentUpon>
     </Compile>
