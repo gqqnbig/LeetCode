@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript">
+
+		/*
+	 * Complete the 'playlist' function below.
+	 *
+	 * The function is expected to return an INTEGER.
+	 * The function accepts following parameters:
+	 *  1. STRING_ARRAY songs
+	 *  2. INTEGER k
+	 *  3. STRING q
+	 */
+
+		function playlist2(songs, k, targetSong)
+		{
+			// Write your code here
+			var ti = songs.indexOf(targetSong);
+			return Math.min(ti - k, k - (ti - songs.length));
+		}
+
+		function playlist(songs, k, targetSong)
+		{
+			var iu = k - 1;
+			var id = k + 1;
+
+			while (iu != id)
+			{
+				if (iu < 0)
+					iu = songs.length - 1;
+				if (id == songs.length)
+					id = 0;
+				if (songs[iu] == targetSong)
+					break;
+				if (songs[id] == targetSong)
+					break;
+				iu--;
+				id++;
+
+			}
+
+
+			if (songs[iu] == targetSong && songs[id] != targetSong)
+				return Math.min(iu - k, k - (iu - songs.length));
+
+			if (songs[iu] != targetSong && songs[id] == targetSong)
+				return Math.min(id - k, k - (id - songs.length));
+
+
+			if (songs[iu] == targetSong && songs[id] == targetSong)
+				return Math.min(Math.min(iu - k, k - (iu - songs.length)), Math.min(id - k, k - (id - songs.length)));
+
+			throw Error();
+		}
+
+		console.log(2 == playlist(["wheniseeyouagain", "borntorun", "nothingelsematters", "cecelia"], 1, "cecelia"));
+
+		console.log(1 == playlist(["dancinginthedark", "rio", "liveoak", "liveoak"], 0, "liveoak"));
+	</script>
+</body>
+</html>
