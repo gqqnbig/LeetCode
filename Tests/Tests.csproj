@@ -113,7 +113,7 @@
     <Compile Include="220-Contains Duplicate III.cs" />
     <Compile Include="239-Sliding Window Maximum-Tests.cs" />
     <Compile Include="239-Sliding Window Maximum.cs" />
-    <Compile Include="307-Range Sum Query - Mutable-Tests.cs" >
+    <Compile Include="307-Range Sum Query - Mutable-Tests.cs">
       <DependentUpon>307-Range Sum Query - Mutable.cs</DependentUpon>
     </Compile>
     <Compile Include="307-Range Sum Query - Mutable.cs" />
@@ -156,6 +156,8 @@
       <DependentUpon>564-Find the Closest Palindrome.cs</DependentUpon>
     </Compile>
     <Compile Include="564-Find the Closest Palindrome.cs" />
+    <Compile Include="Feature Labs-Tests.cs" />
+    <Compile Include="Feature Labs.cs" />
     <Compile Include="MaxPointsOnALineTests.cs" />
     <Compile Include="NextJump1.cs" />
     <Compile Include="NonDecreasingArray.cs" />
@@ -193,6 +195,10 @@
       <LastGenOutput>Resource1.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="HTMLPage1.html" />
+    <Content Include="HTMLPage2.html" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

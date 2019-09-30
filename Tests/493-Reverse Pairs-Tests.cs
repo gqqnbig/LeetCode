@@ -11,10 +11,18 @@ namespace LeetCode.Tests
 	[TestClass]
 	public class ImportantReversePairsTests
 	{
+		[TestMethod]
+		public void IndexTest()
+		{
+
+			Console.WriteLine(Array.BinarySearch(new[]{1,1,1,1,1},1));
+		}
+
+
 		[DataTestMethod]
+		[DataRow(2, new[] { 1, 3, 2, 3, 1 })]
 		[DataRow(19, new[] { 68, 45, 28, 49, 13, 60, 72, 61, 20, 9 })]
 		[DataRow(0, new[] { 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647 })]
-		[DataRow(2, new[] { 1, 3, 2, 3, 1 })]
 		[DataRow(3, new[] { 2, 4, 3, 5, 1 })]
 		public void Test(int expected, int[] nums)
 		{
