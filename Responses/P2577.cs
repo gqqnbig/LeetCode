@@ -133,11 +133,31 @@ namespace LeetCode
 					else if (links.TryGetValue(n, out Node prev))
 					{
 						// We can perform roundtrip to waste time.
-						int neededTime = graph[n2.Y][n2.X] - nextTick;
-						int roundtrips = (neededTime + 1) / 2;
 
-						nextTick = timeTo[n.Y][n.X] + roundtrips * 2 + 1;
-						Debug.Assert(nextTick >= graph[n2.Y][n2.X]);
+						/* t
+						 * [] -> [n]
+						 * 
+						 * Let n be the time constraint of the target node,
+						 * and t+1 < n.
+						 * 
+						 * If n-(t+1) is even (ie. n-t is odd),
+						 * we do (n-(t+1))/2 roundtrips.
+						 * 
+						 * Therefore, t_n = t + (n-(t+1))/2*2 + 1 = n.
+						 * 
+						 * If n-(t+1) is odd (ie. n-t is even),
+						 * we do (n-(t+1)+1)/2 roundtrips.
+						 * 
+						 * Therefore, t_n = t+ (n-(t+1)+1)/2*2 + 1 = n+1
+						 * 
+						 */
+
+						int neededTime = graph[n2.Y][n2.X] - nextTick;
+						if (neededTime % 2 == 0)
+							nextTick = graph[n2.Y][n2.X] + 1;
+						else
+							nextTick = graph[n2.Y][n2.X];
+
 						if (nextTick < timeTo[n2.Y][n2.X])
 						{
 							timeTo[n2.Y][n2.X] = nextTick;
@@ -145,7 +165,7 @@ namespace LeetCode
 							if (queue.Contains(n2) == false)
 								queue.Add(n2);
 
-							Console.WriteLine($"Perform {MakeUnitPhrase(roundtrips, "roundtrip")} between {n} and {prev}, then go to {n2}. The time is now {nextTick}.");
+							Console.WriteLine($"Perform {MakeUnitPhrase((neededTime + 1) / 2, "roundtrip")} between {n} and {prev}, then go to {n2}. The time is now {nextTick}.");
 						}
 
 					}
