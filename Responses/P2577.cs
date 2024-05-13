@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
+/// <summary>
+/// LeetCode runs C# in release mode.
+/// </summary>
 namespace LeetCode
 {
 	class P2577
