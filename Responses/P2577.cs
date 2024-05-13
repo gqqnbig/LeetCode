@@ -101,8 +101,10 @@ namespace LeetCode
 					new int[]{ 1, 0}, //right			
 				};
 
+			int iterations = 0;
 			while (queue.Count > 0)
 			{
+				iterations++;
 				var en = queue.GetEnumerator();
 				en.MoveNext();
 				Node n = en.Current;
@@ -176,6 +178,7 @@ namespace LeetCode
 				}
 			}
 
+			Console.WriteLine("Used {0} iterations.", iterations);
 			if (timeTo[timeTo.Length - 1][width - 1] == int.MaxValue)
 				return -1;
 			else
