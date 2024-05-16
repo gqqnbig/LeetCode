@@ -25,6 +25,10 @@ namespace LeetCode
 
 	class BinaryComparer : IComparer<int>
 	{
+		/// <summary>
+		/// Cache the number of bit 1 in an integer of base 10.
+		/// </summary>
+		static Dictionary<int, int> bits = new Dictionary<int, int>();
 
 		public static int CountOneInBinary(int n)
 		{
@@ -33,12 +37,18 @@ namespace LeetCode
 			if (n == 1)
 				return 1;
 
+			int count;
+			if (bits.TryGetValue(n, out count))
+				return count;
+
 			int remainder;
-			n = Math.DivRem(n, 2, out remainder);
+			int q = Math.DivRem(n, 2, out remainder);
 			if (remainder == 1)
-				return 1 + CountOneInBinary(n);
+				count = 1 + CountOneInBinary(q);
 			else
-				return CountOneInBinary(n);
+				count = CountOneInBinary(q);
+			bits.Add(n, count);
+			return count;
 		}
 
 		public int Compare([AllowNull] int x, [AllowNull] int y)
