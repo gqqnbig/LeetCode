@@ -13,15 +13,32 @@ namespace LeetCode
 
 			return arr;
 		}
+
+		public static void Main(string[] args)
+		{
+			Console.WriteLine(BinaryComparer.CountOneInBinary(0));
+			Console.WriteLine(BinaryComparer.CountOneInBinary(7));
+			Console.WriteLine(BinaryComparer.CountOneInBinary(100));
+		}
 	}
 
 
 	class BinaryComparer : IComparer<int>
 	{
-		static int CountOneInBinary(int n)
+
+		public static int CountOneInBinary(int n)
 		{
-			string s = Convert.ToString(n, 2);
-			return s.Count(c => c == '1');
+			if (n == 0)
+				return 0;
+			if (n == 1)
+				return 1;
+
+			int remainder;
+			n = Math.DivRem(n, 2, out remainder);
+			if (remainder == 1)
+				return 1 + CountOneInBinary(n);
+			else
+				return CountOneInBinary(n);
 		}
 
 		public int Compare([AllowNull] int x, [AllowNull] int y)
