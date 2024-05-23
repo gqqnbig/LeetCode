@@ -81,7 +81,12 @@ namespace LeetCode
 				for (int j = 0; j <= r; j++)
 				{
 					if (cups[i] != null)
-						Console.Write("[{0:f3}] ", cups[i].Load);
+					{
+						if (cups[i].IsWasting)
+							Console.Write("({0:f3}) ", cups[i].Load);
+						else
+							Console.Write("[{0:f3}] ", cups[i].Load);
+					}
 					else
 						Console.Write("[     ] ");
 					i++;
@@ -104,6 +109,11 @@ namespace LeetCode
 		//		return (1 + Row) * Row / 2 + Glass + 1;
 		//	}
 		//}
+
+		/// <summary>
+		/// If all dessendants are full, adding waster to this cup is wasting.
+		/// </summary>
+		public bool IsWasting { get; private set; }
 
 		public double Load { get; private set; }
 
@@ -132,8 +142,18 @@ namespace LeetCode
 			return Cup.GetCup(row, glass);
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="w"></param>
 		public void AddWater(double w)
 		{
+			if (IsWasting)
+			{
+				Console.WriteLine("All descendants of C_{0},{1} are full. Water {2} wasted.", Row, Glass, w);
+				return;
+			}
+
 			if (1 - Load <= w)
 			{
 				if (Load < 1)
@@ -146,18 +166,34 @@ namespace LeetCode
 				}
 				else
 					Console.WriteLine("{0} is already full.", this);
+
 				var l = GetLeft();
+				bool wl;
 				if (l != null)
+				{
 					l.AddWater(w / 2);
+					wl = l.IsWasting;
+				}
 				else
-					Console.WriteLine("water wasted " + (w / 2));
+				{
+					Console.WriteLine("water {0} wasted on the left.", w / 2);
+					wl = true;
+				}
 
 
 				var r = GetRight();
+				bool wr;
 				if (r != null)
+				{
 					r.AddWater(w / 2);
+					wr = r.IsWasting;
+				}
 				else
-					Console.WriteLine("water wasted " + (w / 2));
+				{
+					Console.WriteLine("water {0} wasted on the right.", w / 2);
+					wr = true;
+				}
+				IsWasting = wl && wr;
 			}
 			else
 			{
@@ -178,42 +214,6 @@ namespace LeetCode
 	{
 
 
-		/// <summary>
-		/// Choose pick from total
-		/// </summary>
-		/// <param name="total"></param>
-		/// <param name="pick"></param>
-		/// <returns></returns>
-		public BigInteger Binomial(int total, int pick)
-		{
-			// Binomial[100,50] has 30 digits. Even the data type long can't hold it.
-
-
-			if (pick > total / 2)
-				pick = total - pick;
-
-			BigInteger numerator = 1;
-			for (int i = 0; i < pick; i++)
-				numerator *= total - i;
-
-			BigInteger denominator = 1;
-			for (int i = 1; i <= pick; i++)
-				denominator *= i;
-
-			return numerator / denominator;
-		}
-
-		double GetIncome(int query_row, int query_glass)
-		{
-			const int precision = 5;
-
-			var b = Binomial(query_row, query_glass) * (int)Math.Pow(10, precision);
-			for (int i = 0; i < query_row; i++)
-				b = b / 2;
-
-			double income = (double)b / Math.Pow(10, precision);
-			return income;
-		}
 
 		public double ChampagneTower(int poured, int query_row, int query_glass)
 		{
@@ -228,7 +228,7 @@ namespace LeetCode
 			Console.WriteLine($"{poured} glasses of water fills up {levels} levels. That is, glasses of row index {levels - 1} potentially have water.");
 
 			if (query_row > levels)
-				return 0;
+				Console.WriteLine("However, this only talks about cups at the edge. Cups in the center have multiple paths to be filled.");
 
 
 			Cup.InitCups(Cup.GetIndex(query_row, query_glass) + 1);
@@ -266,13 +266,13 @@ namespace LeetCode
 			var p = new P799();
 			//Console.WriteLine(p.ChampagneTower(0.1, 6, 1));
 			//Console.WriteLine(p.ChampagneTower(1, 6, 1));
-			//Console.WriteLine(p.ChampagneTower(25, 6, 1));
+			Console.WriteLine(p.ChampagneTower(25, 6, 1));
 
 			//Console.WriteLine(p.ChampagneTower(1, 1, 1) == 0);
 			//Console.WriteLine(p.ChampagneTower(2, 1, 1) == 0.5);
 
-			Console.WriteLine(p.ChampagneTower(100000009, 26, 17));
-			Console.WriteLine(p.ChampagneTower(100000009, 33, 17));
+			//Console.WriteLine(p.ChampagneTower(100000009, 26, 17));
+			//Console.WriteLine(p.ChampagneTower(100000009, 33, 17));
 
 
 
