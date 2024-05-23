@@ -8,30 +8,39 @@ namespace LeetCode
 {
 	class Cup
 	{
+		/// <summary>
+		/// cups dominating the target cup
+		/// </summary>
 		static Cup[] cups;
+
+		/// <summary>
+		/// This is the main direction.
+		/// </summary>
+		static int nwse;
+		static int nesw;
 
 		/// <summary>
 		/// Initialize this number of cups.
 		/// </summary>
 		/// <param name="count"></param>
-		public static void InitCups(int count)
+		public static void InitCups(int targetRow, int targetGlass)
 		{
-			cups = new Cup[count];
+			nwse = targetGlass + 1;
+			nesw = targetRow - targetGlass + 1;
+			cups = new Cup[nwse * nesw];
+
+			for (int i = 0; i < cups.Length; i++)
+			{
+				int step = Math.DivRem(i, nwse, out int remain);
+				cups[i] = new Cup(step + remain, remain);
+			}
 		}
 
 		public static Cup GetCup(int row, int glass)
 		{
 			int index = GetIndex(row, glass);
-			if (index >= cups.Length)
+			if (index == -1)
 				return null;
-
-			if (cups[index] == null)
-			{
-				cups[index] = new Cup(row, glass);
-
-				//Console.WriteLine("Cup stack updated");
-				//PrintStack();
-			}
 
 			return cups[index];
 
@@ -42,10 +51,15 @@ namespace LeetCode
 		/// </summary>
 		/// <param name="row">0-based</param>
 		/// <param name="glass">0-based</param>
-		/// <returns>0-based</returns>
+		/// <returns>0-based. -1 means out of range</returns>
 		public static int GetIndex(int row, int glass)
 		{
-			return (1 + row) * row / 2 + glass;
+			if (glass > nesw)
+				return -1;
+			int index = (row - glass) * Cup.nwse + glass;
+			if (index >= cups.Length)
+				return -1;
+			return index;
 		}
 
 		/// <summary>
@@ -55,32 +69,26 @@ namespace LeetCode
 		/// <returns>0-based row and glass</returns>
 		public static int[] GetLocation(int index)
 		{
-			if (index == 0)
-				return new int[] { 0, 0 };
+			int step = Math.DivRem(index, nwse, out int remain);
 
-			int row = (int)(Math.Ceiling(Math.Sqrt(2 * index))) - 1;
-			int glass = index - ((1 + row) * row / 2);
-			if (glass < 0)
-			{
-				glass += row;
-				row--;
-			}
+			var res = new int[] { step + remain, remain };
 
-			Debug.Assert(GetIndex(row, glass) == index);
-			return new int[] { row, glass };
+
+			Debug.Assert(GetIndex(res[0], res[1]) == index);
+			return res;
 		}
 
 		public static void PrintStack()
 		{
 			int rowIndex = GetLocation(cups.Length - 1)[0];
 
-			int i = 0;
 			for (int r = 0; r <= rowIndex; r++)
 			{
 				Console.Write("r{0:d2} " + new string(' ', (rowIndex - r) * 8 / 2), r);
 				for (int j = 0; j <= r; j++)
 				{
-					if (cups[i] != null)
+					int i = GetIndex(r, j);
+					if (i != -1 && cups[i] != null)
 					{
 						if (cups[i].IsWasting)
 							Console.Write("({0:f3}) ", cups[i].Load);
@@ -88,14 +96,13 @@ namespace LeetCode
 							Console.Write("[{0:f3}] ", cups[i].Load);
 					}
 					else
-						Console.Write("[     ] ");
-					i++;
-					if (i >= cups.Length)
-						goto outside;
+						Console.Write("[  x  ] ");
+					//if (i >= cups.Length)
+					//	goto outside;
 				}
 				Console.Write("\n");
 			}
-		outside:
+			//outside:
 			Console.Write("\n");
 		}
 
@@ -231,7 +238,7 @@ namespace LeetCode
 				Console.WriteLine("However, this only talks about cups at the edge. Cups in the center have multiple paths to be filled.");
 
 
-			Cup.InitCups(Cup.GetIndex(query_row, query_glass) + 1);
+			Cup.InitCups(query_row, query_glass);
 			Debug.Assert(Cup.GetCup(query_row, query_glass) != null);
 			Cup root = Cup.GetCup(0, 0);
 			Cup.PrintStack();
