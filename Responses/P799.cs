@@ -98,11 +98,16 @@ namespace LeetCode
 
 			for (int r = 0; r <= maxRowIndex; r++)
 			{
+				if (r % 2 == 0)
+					Console.BackgroundColor = ConsoleColor.Black;
+				else
+					Console.BackgroundColor = ConsoleColor.DarkBlue;
+
 				Console.Write("r{0:d2} ", r);
 				Console.Write(new string(' ', Math.Abs(r + 1 - nesw) * cupWidth / 2));
 
 
-				List<Cup> cupsOnRow = new List<Cup>(); 
+				List<Cup> cupsOnRow = new List<Cup>();
 				for (int j = 0; j <= r; j++)
 				{
 					int i = GetIndex(r, j);
@@ -122,8 +127,10 @@ namespace LeetCode
 							Console.Write(regularStr, c.Load);
 					});
 				}
+				Console.BackgroundColor = ConsoleColor.Black;
 				Console.Write("\n");
 			}
+			Console.BackgroundColor = ConsoleColor.Black;
 			Console.Write("\n");
 		}
 
