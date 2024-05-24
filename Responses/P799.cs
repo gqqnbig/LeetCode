@@ -19,6 +19,8 @@ namespace LeetCode
 		static int nwse;
 		static int nesw;
 
+		public static bool compactPrinting = false;
+
 		/// <summary>
 		/// Initialize this number of cups.
 		/// </summary>
@@ -54,7 +56,7 @@ namespace LeetCode
 		/// <returns>0-based. -1 means out of range</returns>
 		public static int GetIndex(int row, int glass)
 		{
-			if (glass > nesw)
+			if (glass >= Cup.nwse)
 				return -1;
 			int index = (row - glass) * Cup.nwse + glass;
 			if (index >= cups.Length)
@@ -80,23 +82,40 @@ namespace LeetCode
 
 		public static void PrintStack()
 		{
-			int rowIndex = GetLocation(cups.Length - 1)[0];
-
-			for (int r = 0; r <= rowIndex; r++)
+			string wastingStr = "({0:f3}) ";
+			string regularStr = "[{0:f3}] ";
+			string irrelevantStr = "[  x  ] ";
+			int cupWidth = 8;
+			if (compactPrinting)
 			{
-				Console.Write("r{0:d2} " + new string(' ', (rowIndex - r) * 8 / 2), r);
+				wastingStr = "W ";
+				regularStr = "R ";
+				irrelevantStr = "  ";
+				cupWidth = 2;
+			}
+
+
+			int maxRowIndex = GetLocation(cups.Length - 1)[0];
+
+			for (int r = 0; r <= maxRowIndex; r++)
+			{
+				Console.Write("r{0:d2} ", r);
+				Console.Write(new string(' ', Math.Abs(r + 1 - nesw) * cupWidth / 2));
+
 				for (int j = 0; j <= r; j++)
 				{
 					int i = GetIndex(r, j);
 					if (i != -1 && cups[i] != null)
 					{
 						if (cups[i].IsWasting)
-							Console.Write("({0:f3}) ", cups[i].Load);
+							Console.Write(wastingStr, cups[i].Load);
 						else
-							Console.Write("[{0:f3}] ", cups[i].Load);
+							Console.Write(regularStr, cups[i].Load);
 					}
 					else
-						Console.Write("[  x  ] ");
+					{
+						//Console.Write(irrelevantStr);
+					}
 					//if (i >= cups.Length)
 					//	goto outside;
 				}
@@ -239,6 +258,9 @@ namespace LeetCode
 
 
 			Cup.InitCups(query_row, query_glass);
+			//if (query_row > 50 || query_glass > 50)
+			//	Cup.compactPrinting = true;
+
 			Debug.Assert(Cup.GetCup(query_row, query_glass) != null);
 			Cup root = Cup.GetCup(0, 0);
 			Cup.PrintStack();
@@ -271,15 +293,17 @@ namespace LeetCode
 
 
 			var p = new P799();
+			//Console.WriteLine(p.ChampagneTower(5, 2, 1));
 			//Console.WriteLine(p.ChampagneTower(0.1, 6, 1));
 			//Console.WriteLine(p.ChampagneTower(1, 6, 1));
-			Console.WriteLine(p.ChampagneTower(25, 6, 1));
+			//Console.WriteLine(p.ChampagneTower(25, 6, 1));
 
 			//Console.WriteLine(p.ChampagneTower(1, 1, 1) == 0);
 			//Console.WriteLine(p.ChampagneTower(2, 1, 1) == 0.5);
 
 			//Console.WriteLine(p.ChampagneTower(100000009, 26, 17));
 			//Console.WriteLine(p.ChampagneTower(100000009, 33, 17));
+			Console.WriteLine(p.ChampagneTower(1000000000, 99, 50));
 
 
 
