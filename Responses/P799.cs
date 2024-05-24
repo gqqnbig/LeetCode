@@ -1,65 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace LeetCode
 {
-	class Cup
+	class Stack
 	{
 		/// <summary>
 		/// cups dominating the target cup
 		/// </summary>
-		static Cup[] cups;
+		Cup[,] cups;
 
 		/// <summary>
-		/// This is the main direction.
+		/// length. This is the main direction, north west to south east.
 		/// </summary>
-		static int nwse;
-		static int nesw;
-
-		public static bool compactPrinting = false;
-
+		int mainDiagonal;
 		/// <summary>
-		/// Initialize this number of cups.
+		/// length
 		/// </summary>
-		/// <param name="count"></param>
-		public static void InitCups(int targetRow, int targetGlass)
+		int antiDiagonal;
+
+		public bool compactPrinting = false;
+
+		public Stack(int targetRow, int targetGlass)
 		{
-			nwse = targetGlass + 1;
-			nesw = targetRow - targetGlass + 1;
-			cups = new Cup[nwse * nesw];
+			mainDiagonal = targetGlass + 1;
+			antiDiagonal = targetRow - targetGlass + 1;
+			cups = new Cup[antiDiagonal, mainDiagonal];
 
-			for (int i = 0; i < cups.Length; i++)
+			for (int i = 0; i < antiDiagonal; i++)
 			{
-				int step = Math.DivRem(i, nwse, out int remain);
-				cups[i] = new Cup(step + remain, remain);
+				for (int j = 0; j < mainDiagonal; j++)
+				{
+					cups[i, j] = new Cup(i + j, j);
+				}
 			}
 		}
 
-		public static Cup GetCup(int row, int glass)
+
+		public Cup GetCup(int row, int glass)
 		{
-			int index = GetIndex(row, glass);
-			if (index == -1)
+			if (row - glass >= antiDiagonal || glass >= mainDiagonal)
 				return null;
 
-			return cups[index];
+			return cups[row - glass, glass];
 
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="row">0-based</param>
-		/// <param name="glass">0-based</param>
-		/// <returns>0-based. -1 means out of range</returns>
-		public static int GetIndex(int row, int glass)
-		{
-			if (glass >= Cup.nwse)
-				return -1;
-			int index = (row - glass) * Cup.nwse + glass;
-			if (index >= cups.Length)
-				return -1;
-			return index;
 		}
 
 		/// <summary>
@@ -67,64 +53,71 @@ namespace LeetCode
 		/// </summary>
 		/// <param name="index">0-based</param>
 		/// <returns>0-based row and glass</returns>
-		public static int[] GetLocation(int index)
+		public int[] GetLocation(int index)
 		{
-			int step = Math.DivRem(index, nwse, out int remain);
+			int step = Math.DivRem(index, mainDiagonal, out int remain);
 
 			var res = new int[] { step + remain, remain };
 
 
-			Debug.Assert(GetIndex(res[0], res[1]) == index);
 			return res;
 		}
 
-		public static void PrintStack()
+
+
+		/// <summary>
+		/// Optionally highlight a cup
+		/// </summary>
+		/// <param name="highlightRow"></param>
+		/// <param name="highlightGlass"></param>
+		public void PrintStack(int highlightRow = -1, int highlightGlass = -1)
 		{
 			//return;
-			string wastingStr = "({0:f3}) ";
+			//string wastingStr = "({0:f3}) ";
 			string regularStr = "[{0:f3}] ";
-			string irrelevantStr = "[  x  ] ";
+			//string irrelevantStr = "[  x  ] ";
 			int cupWidth = 8;
 			if (compactPrinting)
 			{
-				wastingStr = "W ";
+				//wastingStr = "W ";
 				regularStr = "R ";
-				irrelevantStr = "  ";
+				//irrelevantStr = "  ";
 				cupWidth = 2;
 			}
 
 
-			int maxRowIndex = GetLocation(cups.Length - 1)[0];
+			int maxRowIndex = mainDiagonal + antiDiagonal - 2;
 
 			for (int r = 0; r <= maxRowIndex; r++)
 			{
 				if (r % 2 == 0)
 					Console.BackgroundColor = ConsoleColor.Black;
 				else
-					Console.BackgroundColor = ConsoleColor.DarkBlue;
+					Console.BackgroundColor = ConsoleColor.DarkGray;
 
 				Console.Write("r{0:d2} ", r);
-				Console.Write(new string(' ', Math.Abs(r + 1 - nesw) * cupWidth / 2));
+				Console.Write(new string(' ', Math.Abs(r + 1 - antiDiagonal) * cupWidth / 2));
 
 
 				List<Cup> cupsOnRow = new List<Cup>();
 				for (int j = 0; j <= r; j++)
 				{
-					int i = GetIndex(r, j);
-					if (i != -1 && cups[i] != null)
-						cupsOnRow.Add(cups[i]);
+					var c = GetCup(r, j);
+					if (c != null)
+						cupsOnRow.Add(c);
 				}
 
-				if (cupsOnRow.TrueForAll(c => c.IsWasting == false && c.Load == 0))
+				if (cupsOnRow.TrueForAll(c => c.Load == 0))
 					Console.Write("...");
 				else
 				{
 					cupsOnRow.ForEach(c =>
 					{
-						if (c.IsWasting)
-							Console.Write(wastingStr, c.Load);
-						else
-							Console.Write(regularStr, c.Load);
+						if (c.Row == highlightRow && c.Glass == highlightGlass)
+							Console.ForegroundColor = ConsoleColor.Red;
+
+						Console.Write(regularStr, c.Load);
+						Console.ForegroundColor = ConsoleColor.White;
 					});
 				}
 				Console.BackgroundColor = ConsoleColor.Black;
@@ -135,17 +128,159 @@ namespace LeetCode
 		}
 
 
+		private static IEnumerable<HashSet<T>> Pick<T>(IEnumerable<T> items, int count)
+		{
+			int i = 0;
+			foreach (var item in items)
+			{
+				if (count == 1)
+				{
+					var c = new HashSet<T>();
+					c.Add(item);
+					yield return c;
+				}
+				else
+				{
+					foreach (var result in Pick(items.Skip(i + 1), count - 1))
+					{
+						result.Add(item);
+						yield return result;
+					}
+				}
+
+				++i;
+			}
+		}
+
+		public static IEnumerable<HashSet<T>> Pick<T>(HashSet<T> items, int count)
+		{
+			return Pick<T>(items.ToList(), count);
+		}
+
+
+		Cup GetRight(Cup c)
+		{
+			return GetCup(c.Row + 1, c.Glass + 1);
+		}
+
+		Cup GetLeft(Cup c)
+		{
+			return GetCup(c.Row + 1, c.Glass);
+		}
+
+		double AddWaterDownPath(double water, HashSet<int> rights)
+		{
+			double wasterToOtherPath = 0;
+			Cup root = GetCup(0, 0);
+			Cup c = root;
+			for (int step = 0; step <= antiDiagonal + mainDiagonal - 2; step++)
+			{
+
+				if (1 - c.Load <= water)
+				{
+					if (c.Load < 1)
+					{
+						double loadBefore = c.Load;
+						double waterBefore = water;
+
+						water -= 1 - c.Load;
+						c.Load = 1;
+
+						Console.Write("Cup_{0},{1} Load = {2} -> {3}.", c.Row, c.Glass, loadBefore, c.Load);
+						Console.WriteLine(" Water = {0} -> {1}", waterBefore, water);
+
+						PrintStack(c.Row, c.Glass);
+					}
+					else
+						Console.WriteLine("{0} is already full.", c);
+
+
+					water /= 2;
+					var lCup = GetLeft(c);
+					if (lCup == null)
+						Console.WriteLine("water {0} wasted on the left.", water);
+
+
+					var rCup = GetRight(c);
+					if (rCup == null)
+						Console.WriteLine("water {0} wasted on the right.", water);
+
+
+					if (rights.Contains(step))
+					{
+						//Move right
+						if (lCup != null)
+							wasterToOtherPath += water;
+
+						Debug.Assert(rCup != null);
+						c = rCup;
+					}
+					else
+					{
+						//Move left
+						if (rCup != null)
+							wasterToOtherPath += water;
+
+						Debug.Assert(lCup != null);
+						c = lCup;
+					}
+				}
+				else
+				{
+					double l = c.Load;
+					c.Load += water;
+					Console.WriteLine("Cup_{0},{1} Load = {2} -> {3}. Water = 0", c.Row, c.Glass, l, c.Load);
+
+					return wasterToOtherPath;
+				}
+			}
+			return wasterToOtherPath;
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="water"></param>
+		public void AddWater(double water)
+		{
+			//generate paths
+			var total = NumberService.Binomial(antiDiagonal + mainDiagonal - 2, mainDiagonal - 1);
+
+			while (true)
+			{
+				Console.WriteLine("Water is {1:f3}. We are about to loop {0} times.", total, water);
+				//if water is not enough to fill the path or reach the bottom, stop looping.
+				foreach (var rights in Pick(Enumerable.Range(0, antiDiagonal + mainDiagonal - 2), mainDiagonal - 1))
+				{
+					water = AddWaterDownPath(water, rights);
+					Cup target = cups[antiDiagonal - 1, mainDiagonal - 1];
+					if (target.Load >= 1)
+						return;
+					if (water <= 0)
+						return;
+				}
+			}
+		}
+
+	}
+
+	class Cup
+	{
+
 		public int Row { get; private set; }
 		public int Glass { get; private set; }
 
-		/// <summary>
-		/// If all dessendants are full, adding waster to this cup is wasting.
-		/// </summary>
-		public bool IsWasting { get; private set; }
+		///// <summary>
+		///// If all dessendants are full, adding waster to this cup is wasting.
+		///// </summary>
+		//public bool IsWasting { get; private set; }
 
-		public double Load { get; private set; }
+		public double Load { get; set; }
 
-		private Cup(int row, int glass)
+		//public double Capacity { get; private set; }
+
+
+		public Cup(int row, int glass)
 		{
 			if (row < 0 || glass < 0)
 				throw new ArgumentException($"{nameof(row)} and {nameof(glass)} cannot be negative.");
@@ -154,82 +289,23 @@ namespace LeetCode
 
 			Row = row;
 			Glass = glass;
+
 		}
 
-		private Cup GetLeft()
-		{
-			int row = Row + 1;
-			int glass = Glass;
-			return Cup.GetCup(row, glass);
-		}
+		//private Cup GetLeft()
+		//{
+		//	int row = Row + 1;
+		//	int glass = Glass;
+		//	return Cup.GetCup(row, glass);
+		//}
 
-		public Cup GetRight()
-		{
-			int row = Row + 1;
-			int glass = Glass + 1;
-			return Cup.GetCup(row, glass);
-		}
+		//public Cup GetRight()
+		//{
+		//	int row = Row + 1;
+		//	int glass = Glass + 1;
+		//	return Cup.GetCup(row, glass);
+		//}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="w"></param>
-		public void AddWater(double w)
-		{
-			if (IsWasting)
-			{
-				Console.WriteLine("All descendants of C_{0},{1} are full. Water {2} wasted.", Row, Glass, w);
-				return;
-			}
-
-			if (1 - Load <= w)
-			{
-				if (Load < 1)
-				{
-					w -= 1 - Load;
-					Load = 1;
-
-					Console.WriteLine(this);
-					Cup.PrintStack();
-				}
-				else
-					Console.WriteLine("{0} is already full.", this);
-
-				var l = GetLeft();
-				bool wl;
-				if (l != null)
-				{
-					l.AddWater(w / 2);
-					wl = l.IsWasting;
-				}
-				else
-				{
-					Console.WriteLine("water {0} wasted on the left.", w / 2);
-					wl = true;
-				}
-
-
-				var r = GetRight();
-				bool wr;
-				if (r != null)
-				{
-					r.AddWater(w / 2);
-					wr = r.IsWasting;
-				}
-				else
-				{
-					Console.WriteLine("water {0} wasted on the right.", w / 2);
-					wr = true;
-				}
-				IsWasting = wl && wr;
-			}
-			else
-			{
-				Load += w;
-				Console.WriteLine(this);
-				Cup.PrintStack();
-			}
-		}
 
 		public override string ToString()
 		{
@@ -240,8 +316,6 @@ namespace LeetCode
 
 	class P799
 	{
-
-
 
 		public double ChampagneTower(int poured, int query_row, int query_glass)
 		{
@@ -259,34 +333,29 @@ namespace LeetCode
 				Console.WriteLine("However, this only talks about cups at the edge. Cups in the center have multiple paths to be filled.");
 
 
-			Cup.InitCups(query_row, query_glass);
+			Stack stack = new Stack(query_row, query_glass);
 			//if (query_row > 50 || query_glass > 50)
 			//	Cup.compactPrinting = true;
+			stack.AddWater(poured);
 
-			Debug.Assert(Cup.GetCup(query_row, query_glass) != null);
-			Cup root = Cup.GetCup(0, 0);
-			Cup.PrintStack();
+			//Debug.Assert(Cup.GetCup(query_row, query_glass) != null);
+			//Cup root = Cup.GetCup(0, 0);
+			//Cup.PrintStack(0, 0);
 
-			root.AddWater(poured);
+			//root.AddWater(poured);
 
-			Cup targetCup = Cup.GetCup(query_row, query_glass);
+			Cup targetCup = stack.GetCup(query_row, query_glass);
 			return targetCup.Load;
 
 		}
 
 		public static void Main(string[] args)
 		{
-			//for (int i = 0; i < 10; i++)
-			//{
-			//	for (int j = 0; j <= i; j++)
-			//	{
-			//		int index = Cup.GetIndex(i, j);
-			//		//Console.WriteLine(index);
-			//		int[] lo = Cup.GetLocation(index);
-			//		Debug.Assert(lo[0] == i);
-			//		Debug.Assert(lo[1] == j);
-			//	}
-			//}
+			var res = Stack.Pick(new HashSet<int>(new int[] { 1, 2, 3, 4, 5 }), 3);
+			foreach (var path in res)
+			{
+				Console.WriteLine(string.Join(", ", path));
+			}
 
 
 
@@ -297,14 +366,14 @@ namespace LeetCode
 			//Console.WriteLine(p.ChampagneTower(5, 2, 1));
 			//Console.WriteLine(p.ChampagneTower(0.1, 6, 1));
 			//Console.WriteLine(p.ChampagneTower(1, 6, 1));
-			//Console.WriteLine(p.ChampagneTower(25, 6, 1));
+			Console.WriteLine(p.ChampagneTower(25, 6, 1));
 
 			//Console.WriteLine(p.ChampagneTower(1, 1, 1) == 0);
 			//Console.WriteLine(p.ChampagneTower(2, 1, 1) == 0.5);
 
 			//Console.WriteLine(p.ChampagneTower(100000009, 26, 17));
 			//Console.WriteLine(p.ChampagneTower(100000009, 33, 17));
-			Console.WriteLine(p.ChampagneTower(1000000, 50, 25));
+			//Console.WriteLine(p.ChampagneTower(1000000, 50, 25));
 
 
 
