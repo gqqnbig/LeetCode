@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Diagnostics;
-using System.Numerics;
 
 namespace LeetCode
 {
@@ -82,6 +80,7 @@ namespace LeetCode
 
 		public static void PrintStack()
 		{
+			//return;
 			string wastingStr = "({0:f3}) ";
 			string regularStr = "[{0:f3}] ";
 			string irrelevantStr = "[  x  ] ";
@@ -102,39 +101,35 @@ namespace LeetCode
 				Console.Write("r{0:d2} ", r);
 				Console.Write(new string(' ', Math.Abs(r + 1 - nesw) * cupWidth / 2));
 
+
+				List<Cup> cupsOnRow = new List<Cup>(); 
 				for (int j = 0; j <= r; j++)
 				{
 					int i = GetIndex(r, j);
 					if (i != -1 && cups[i] != null)
+						cupsOnRow.Add(cups[i]);
+				}
+
+				if (cupsOnRow.TrueForAll(c => c.IsWasting == false && c.Load == 0))
+					Console.Write("...");
+				else
+				{
+					cupsOnRow.ForEach(c =>
 					{
-						if (cups[i].IsWasting)
-							Console.Write(wastingStr, cups[i].Load);
+						if (c.IsWasting)
+							Console.Write(wastingStr, c.Load);
 						else
-							Console.Write(regularStr, cups[i].Load);
-					}
-					else
-					{
-						//Console.Write(irrelevantStr);
-					}
-					//if (i >= cups.Length)
-					//	goto outside;
+							Console.Write(regularStr, c.Load);
+					});
 				}
 				Console.Write("\n");
 			}
-			//outside:
 			Console.Write("\n");
 		}
 
 
 		public int Row { get; private set; }
 		public int Glass { get; private set; }
-		//public int Index
-		//{
-		//	get
-		//	{
-		//		return (1 + Row) * Row / 2 + Glass + 1;
-		//	}
-		//}
 
 		/// <summary>
 		/// If all dessendants are full, adding waster to this cup is wasting.
@@ -265,7 +260,6 @@ namespace LeetCode
 			Cup root = Cup.GetCup(0, 0);
 			Cup.PrintStack();
 
-			//for (int i = 0; i < poured; i++)
 			root.AddWater(poured);
 
 			Cup targetCup = Cup.GetCup(query_row, query_glass);
@@ -303,7 +297,7 @@ namespace LeetCode
 
 			//Console.WriteLine(p.ChampagneTower(100000009, 26, 17));
 			//Console.WriteLine(p.ChampagneTower(100000009, 33, 17));
-			Console.WriteLine(p.ChampagneTower(1000000000, 99, 50));
+			Console.WriteLine(p.ChampagneTower(1000000, 50, 25));
 
 
 
