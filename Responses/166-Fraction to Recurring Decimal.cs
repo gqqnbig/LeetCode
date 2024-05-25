@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace LeetCode.Tests
 {
@@ -60,7 +57,7 @@ namespace LeetCode.Tests
 				//float的精度不足够表示 -2147483648/10。
 				//float会计算成         -214748368
 
-				int q= Multiply10ThenDiv(numerator, denominator, out var r);
+				int q = Multiply10ThenDiv(numerator, denominator, out var r);
 
 				Debug.Assert(-10 < q && q < 10);
 				Debug.Assert(q == numerator * 10L / denominator);

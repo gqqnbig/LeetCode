@@ -1,28 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 
 namespace LeetCode.Tests
 {
-	[TestClass]
+	
 	public class ContainsDuplicate3Tests
 	{
 
-		[DataTestMethod]
-		[DataRow(false, int.MaxValue, 2147483647, new[] { -1, 2147483647 })]
-		[DataRow(false, 1, 2147483647, new[] { -1, 2147483647 })]
-		[DataRow(true, 3, 0, new[] { 1, 2, 3, 1 })]
-		[DataRow(true, 1, 2, new[] { 1, 0, 1, 1 })]
-		[DataRow(false, 2, 3, new[] { 1, 5, 9, 1, 5, 9 })]
+		[Theory]
+		[InlineData(false, int.MaxValue, 2147483647, new[] { -1, 2147483647 })]
+		[InlineData(false, 1, 2147483647, new[] { -1, 2147483647 })]
+		[InlineData(true, 3, 0, new[] { 1, 2, 3, 1 })]
+		[InlineData(true, 1, 2, new[] { 1, 0, 1, 1 })]
+		[InlineData(false, 2, 3, new[] { 1, 5, 9, 1, 5, 9 })]
 		public void ContainsNearbyAlmostDuplicateTest(bool expected, int k, int t, int[] array)
 		{
-			Assert.AreEqual(expected, new ContainsDuplicate3().ContainsNearbyAlmostDuplicate(array, k, t));
+			Assert.Equal(expected, new ContainsDuplicate3().ContainsNearbyAlmostDuplicate(array, k, t));
 		}
 
-		[TestMethod]
+		[Fact]
 		public void ContainsNearbyAlmostDuplicateSpeedTest()
 		{
 

@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using ExpressionToCodeLib;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LeetCode.Tests
 {
@@ -17,7 +11,7 @@ namespace LeetCode.Tests
 			try
 			{
 				v = actual.Compile()();
-				CollectionAssert.AreEqual(expected, v);
+				CollectionAssert.Equal(expected, v);
 			}
 			catch (AssertFailedException e)
 			{
@@ -33,7 +27,7 @@ namespace LeetCode.Tests
 			{
 				c = expected.Compile()();
 				v = actual.Compile()();
-				CollectionAssert.AreEqual(c, v);
+				CollectionAssert.Equal(c, v);
 			}
 			catch (AssertFailedException e)
 			{

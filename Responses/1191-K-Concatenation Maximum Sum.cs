@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LeetCode.Tests
 {
 	class KConcatenationMaximumSum
 	{
-		private static readonly int modulo = (int) (Math.Pow(10, 9) + 7);
+		private static readonly int modulo = (int)(Math.Pow(10, 9) + 7);
 
 
 		public int KConcatenationMaxSum(int[] arr, int k)
@@ -22,9 +19,9 @@ namespace LeetCode.Tests
 			}
 			else
 			{
-				int sum =Math.Max(0, arr.Sum());
-				int compact = (int) (sum * (k - 2L) % modulo);
-				int intraArraySum = MaxSubArray(arr,compact);
+				int sum = Math.Max(0, arr.Sum());
+				int compact = (int)(sum * (k - 2L) % modulo);
+				int intraArraySum = MaxSubArray(arr, compact);
 				return intraArraySum;
 			}
 		}
@@ -46,7 +43,7 @@ namespace LeetCode.Tests
 				max = Math.Max(max, maxEndingThis);
 			}
 
-			return (int) max;
+			return (int)max;
 		}
 
 		/// <summary>

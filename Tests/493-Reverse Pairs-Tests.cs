@@ -1,35 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace LeetCode.Tests
 {
-	[TestClass]
+	
 	public class ImportantReversePairsTests
 	{
-		[TestMethod]
+		[Fact]
 		public void IndexTest()
 		{
 
-			Console.WriteLine(Array.BinarySearch(new[]{1,1,1,1,1},1));
+			Console.WriteLine(Array.BinarySearch(new[] { 1, 1, 1, 1, 1 }, 1));
 		}
 
 
-		[DataTestMethod]
-		[DataRow(2, new[] { 1, 3, 2, 3, 1 })]
-		[DataRow(19, new[] { 68, 45, 28, 49, 13, 60, 72, 61, 20, 9 })]
-		[DataRow(0, new[] { 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647 })]
-		[DataRow(3, new[] { 2, 4, 3, 5, 1 })]
+		[Theory]
+		[InlineData(2, new[] { 1, 3, 2, 3, 1 })]
+		[InlineData(19, new[] { 68, 45, 28, 49, 13, 60, 72, 61, 20, 9 })]
+		[InlineData(0, new[] { 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647 })]
+		[InlineData(3, new[] { 2, 4, 3, 5, 1 })]
 		public void Test(int expected, int[] nums)
 		{
-			Assert.AreEqual(expected, new ImportantReversePairs().ReversePairs(nums));
+			Assert.Equal(expected, new ImportantReversePairs().ReversePairs(nums));
 		}
 
-		[TestMethod]
+		[Fact]
 		public void SpeedTest()
 		{
 			var nums = (from m in Resource1.P493Input1.Split(',')
@@ -41,7 +38,7 @@ namespace LeetCode.Tests
 			Console.WriteLine(sw.ElapsedMilliseconds);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void GenerationTest()
 		{
 			Random rand = new Random();
@@ -54,7 +51,7 @@ namespace LeetCode.Tests
 					arr[j] = rand.Next(100);
 
 
-				Assert.AreEqual(solution.ReversePairsBruteForce(arr), solution.ReversePairs(arr), "nums=" + ExpressionToCodeLib.ObjectToCode.ComplexObjectToPseudoCode(arr));
+				Assert.Equal(solution.ReversePairsBruteForce(arr), solution.ReversePairs(arr), "nums=" + ExpressionToCodeLib.ObjectToCode.ComplexObjectToPseudoCode(arr));
 			}
 		}
 	}

@@ -1,52 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 
 namespace LeetCode.Tests
 {
-	[TestClass]
+	
 	public class WildcardMatchingTests
 	{
-		[DataTestMethod]
-		[DataRow(true, "mississippi", "m*si*")]
-		[DataRow(true, "a", "?*")]
-		[DataRow(true, "a", "a*")]
-		[DataRow(true, "", "*")]
-		[DataRow(true, "", "")]
-		[DataRow(true, "ab", "*?b")]
-		[DataRow(true, "ab", "a*?")]
-		[DataRow(true, "ab", "*?")]
-		[DataRow(true, "ab", "?*")]
-		[DataRow(true, "aab", "a?b")]
-		[DataRow(true, "aa", "aa")]
-		[DataRow(false, "aa", "a")]
-		[DataRow(true, "ab", "a*b")]
-		[DataRow(false, "acdcb", "a*c?b")]
-		[DataRow(true, "adceb", "*a*b")]
-		[DataRow(false, "cb", "?a")]
-		[DataRow(true, "aa", "*")]
-		[DataRow(false, "cab", "a*b")]
-		[DataRow(true, "aaab", "a*b")]
-		[DataRow(true, "aab", "a*b")]
-		[DataRow(false, "aaa", "a?b")]
-		[DataRow(false, "", "?")]
-		[DataRow(true, "a", "?")]
+		[Theory]
+		[InlineData(true, "mississippi", "m*si*")]
+		[InlineData(true, "a", "?*")]
+		[InlineData(true, "a", "a*")]
+		[InlineData(true, "", "*")]
+		[InlineData(true, "", "")]
+		[InlineData(true, "ab", "*?b")]
+		[InlineData(true, "ab", "a*?")]
+		[InlineData(true, "ab", "*?")]
+		[InlineData(true, "ab", "?*")]
+		[InlineData(true, "aab", "a?b")]
+		[InlineData(true, "aa", "aa")]
+		[InlineData(false, "aa", "a")]
+		[InlineData(true, "ab", "a*b")]
+		[InlineData(false, "acdcb", "a*c?b")]
+		[InlineData(true, "adceb", "*a*b")]
+		[InlineData(false, "cb", "?a")]
+		[InlineData(true, "aa", "*")]
+		[InlineData(false, "cab", "a*b")]
+		[InlineData(true, "aaab", "a*b")]
+		[InlineData(true, "aab", "a*b")]
+		[InlineData(false, "aaa", "a?b")]
+		[InlineData(false, "", "?")]
+		[InlineData(true, "a", "?")]
 		public void Test(bool expected, string s, string p)
 		{
-			Assert.AreEqual(expected, new WildcardMatching().IsMatch(s, p));
+			Assert.Equal(expected, new WildcardMatching().IsMatch(s, p));
 		}
 
-		[TestMethod]
+		[Fact]
 		public void SpeedTest()
 		{
 			//new WildcardMatching().IsMatch("aaaabaaaabbbbaabbbaabbaababbabbaaaababaaabbbbbbaabbbabababbaaabaabaaaaaabbaabbbbaababbababaabbbaababbbba", "*b*aba*babaa*bbaba*a*aaba*b*aa*a*b*ba*a*a*");
 			new WildcardMatching().IsMatch("aaaabaaaabbbbaabbbaabbaababbabbaaaababaaabbbbbbaabbbabababbaaabaabaaaaaabbaabbbbaababbababaabbbaababbbba", "*****b*aba***babaa*bbaba***a*aaba*b*aa**a*b**ba***a*a*");
 		}
 
-		[TestMethod]
+		[Fact]
 		public void SpeedTest2()
 		{
 			new WildcardMatching().IsMatch(

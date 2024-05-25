@@ -1,32 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Runtime.Remoting.Channels;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace LeetCode.Tests
 {
-	[TestClass]
+	
 	public class FindTheClosestPalindromeTests
 	{
 
-		[DataTestMethod]
-		[DataRow("1", "0")]
-		[DataRow("999999998899999999", "999999999999999999")]
-		[DataRow("2147447412", "2147483647")]
-		[DataRow("999", "1001")]
-		[DataRow("1394334931", "1394375405")]
-		[DataRow("121", "123")]
-		[DataRow("1221", "1234")]
+		[Theory]
+		[InlineData("1", "0")]
+		[InlineData("999999998899999999", "999999999999999999")]
+		[InlineData("2147447412", "2147483647")]
+		[InlineData("999", "1001")]
+		[InlineData("1394334931", "1394375405")]
+		[InlineData("121", "123")]
+		[InlineData("1221", "1234")]
 		public void NearestPalindromicTest(string expected, string input)
 		{
-			Assert.AreEqual(expected, new FindTheClosestPalindrome().NearestPalindromic(input), $"input={input}");
+			Assert.Equal(expected, new FindTheClosestPalindrome().NearestPalindromic(input), $"input={input}");
 		}
 
-		[TestMethod]
+		[Fact]
 		public void NearestPalindromicGenerationTest()
 		{
 			var solution = new FindTheClosestPalindrome();
@@ -67,13 +64,13 @@ namespace LeetCode.Tests
 			 });
 		}
 
-		[TestMethod]
+		[Fact]
 		public void NearestPalindromicSpeedTest()
 		{
 			new FindTheClosestPalindrome().NearestPalindromic("2147483647");
 		}
 
-		[TestMethod]
+		[Fact]
 		public void IsPalindromicSpeedTest()
 		{
 			//数学方法: 366
@@ -130,7 +127,7 @@ namespace LeetCode.Tests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void GetDigitTest()
 		{
 			Random rand = new Random();
@@ -140,11 +137,11 @@ namespace LeetCode.Tests
 				var str = number.ToString();
 				var length = str.Length;
 				var index = rand.Next(length);
-				Assert.AreEqual(GetDigit(number, index).ToString()[0], str[index]);
+				Assert.Equal(GetDigit(number, index).ToString()[0], str[index]);
 			}
 		}
 
-		//[TestMethod]
+		//[Fact]
 		//public void GetDigitSpeedTest()
 		//{
 		//	List<int> numbers = new List<int>();

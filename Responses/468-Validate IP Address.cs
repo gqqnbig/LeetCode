@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text.RegularExpressions;
@@ -11,7 +7,7 @@ namespace LeetCode.Tests
 {
 	class ValidateIPAddress
 	{
-		static readonly Regex leading0Check=new Regex(@"(^0\d|\.0\d)");
+		static readonly Regex leading0Check = new Regex(@"(^0\d|\.0\d)");
 
 		public string ValidIPAddress(string IP)
 		{

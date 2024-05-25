@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Collections.Generic;
+using Xunit;
 using Xunit.Sdk;
 
 namespace LeetCode.Tests
 {
-	[TestClass]
 	public class Amazon2
 	{
 		public int removeObstacle(int[,] lot)
@@ -86,7 +80,7 @@ namespace LeetCode.Tests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void removeObstacleTest()
 		{
 			var data = new int[3, 3]
@@ -96,10 +90,10 @@ namespace LeetCode.Tests
 				{1, 9, 1}
 			};
 
-			Assert.AreEqual(3, new Amazon2().removeObstacle(data));
+			Assert.Equal(3, new Amazon2().removeObstacle(data));
 		}
 
-		[TestMethod]
+		[Fact]
 		public void removeObstacleTest2()
 		{
 			var data = new int[,]
@@ -109,11 +103,11 @@ namespace LeetCode.Tests
 				{0,1,1, 9, 1}
 			};
 
-			Assert.AreEqual(5, new Amazon2().removeObstacle(data));
+			Assert.Equal(5, new Amazon2().removeObstacle(data));
 		}
 
 		//[DataTestMethod]
-		//[DataRow(new int[3, 3]
+		//[InlineData(new int[3, 3]
 		//{
 		//	{1, 0, 0},
 		//	{1, 0, 0},
@@ -123,7 +117,7 @@ namespace LeetCode.Tests
 		//{
 		//	var data = 
 
-		//	Assert.AreEqual(3, new Amazon2().removeObstacle(lot));
+		//	Assert.Equal(3, new Amazon2().removeObstacle(lot));
 		//}
 	}
 }

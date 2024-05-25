@@ -1,25 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Xunit.Sdk;
 
 namespace LeetCode.Tests
 {
-	[TestClass]
 	public class NonDecreasingArrayTests
 	{
 
-		[DataTestMethod]
-		[DataRow(true, new int[] { 0 })]
+		[Theory]
+		[InlineData(true, new int[] { 0 })]
 		public void CheckPossibilityTest(bool expected, int[] nums)
 		{
-			Assert.AreEqual(expected, CheckPossibilityBruteForce(nums), "输入为[{0}]", string.Join(",", nums));
+			Assert.Equal(expected, CheckPossibilityBruteForce(nums), "输入为[{0}]", string.Join(",", nums));
 		}
 
-		[TestMethod]
+		[Fact]
 		public void CheckPossibilityGenerationTest()
 		{
 			Random rand = new Random();

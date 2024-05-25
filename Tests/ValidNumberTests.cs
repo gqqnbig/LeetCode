@@ -18,7 +18,7 @@ namespace LeetCode.Tests
 		[InlineData("99e2.5", false)]
 		[InlineData("53.5e93", true)]
 		[InlineData(" --6 ", false)]
-		[InlineData("-+3",false)]
+		[InlineData("-+3", false)]
 		[InlineData("95a54e53", false)]
 		[InlineData("99e9999", true)]
 		[InlineData(".1", true)]

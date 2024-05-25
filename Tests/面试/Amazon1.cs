@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Xunit.Sdk;
 
 
 
 namespace LeetCode.Tests
 {
-	[TestClass]
+	
 	public class Amazon1
 	{
 		public int minimumTime(int[] parts)
@@ -20,7 +16,7 @@ namespace LeetCode.Tests
 
 		public int minimumTime(int numOfParts, int[] parts)
 		{
-			MinHeap heap=new MinHeap(parts.Length);
+			MinHeap heap = new MinHeap(parts.Length);
 
 			for (int i = 0; i < parts.Length; i++)
 			{
@@ -146,13 +142,13 @@ namespace LeetCode.Tests
 		}
 
 
-		[DataTestMethod]
-		[DataRow(53, new[] { 3, 4, 5, 4, 7 })]
-		[DataRow(0, new int[0])]
-		[DataRow(58, new[] { 8, 4, 6, 12 })]
+		[Theory]
+		[InlineData(53, new[] { 3, 4, 5, 4, 7 })]
+		[InlineData(0, new int[0])]
+		[InlineData(58, new[] { 8, 4, 6, 12 })]
 		public void minimumTimeTest(int expected, int[] parts)
 		{
-			Assert.AreEqual(expected, new Amazon1().minimumTime(parts));
+			Assert.Equal(expected, new Amazon1().minimumTime(parts));
 		}
 	}
 }

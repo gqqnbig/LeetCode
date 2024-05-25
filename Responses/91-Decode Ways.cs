@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LeetCode.Tests
+﻿namespace LeetCode.Tests
 {
 	class DecodeWays
 	{
@@ -15,7 +9,7 @@ namespace LeetCode.Tests
 			for (int i = s.Length - 1; i >= 0; i--)
 			{
 				if (IsChar(s[i]))
-					waysCache[i]+=waysCache[i+1];
+					waysCache[i] += waysCache[i + 1];
 
 				if (i - 1 >= 0 && IsChar(s[i - 1], s[i]))
 					waysCache[i - 1] += waysCache[i + 1];

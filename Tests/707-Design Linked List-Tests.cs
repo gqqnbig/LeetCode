@@ -1,27 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using ExpressionToCodeLib;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace LeetCode.Tests
 {
 
 
 
-	[TestClass]
+	
 	public class MyLinkedListTests
 	{
 
-		[TestMethod]
+		[Fact]
 		public void GetTest1()
 		{
 			var list = new MyLinkedList();
-			Assert.AreEqual(-1, list.Get(-1));
+			Assert.Equal(-1, list.Get(-1));
 
 			list.AddAtHead(1);
 			list.AddAtTail(3);
@@ -31,19 +26,19 @@ namespace LeetCode.Tests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void GetTest2()
 		{
 			var list = new MyLinkedList();
-			Assert.AreEqual(-1, list.Get(-1));
+			Assert.Equal(-1, list.Get(-1));
 
-			list.AddAtIndex(-1,0);
+			list.AddAtIndex(-1, 0);
 			Assert.That.AreEqual(0, () => list.Get(0));
 
 			list.DeleteAtIndex(-1);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void AddAtHeadTest()
 		{
 			var list = new MyLinkedList();
@@ -51,12 +46,12 @@ namespace LeetCode.Tests
 			list.AddAtHead(2);
 			list.AddAtHead(3);
 
-			Assert.AreEqual(list.Get(0), 3);
-			Assert.AreEqual(list.Get(1), 2);
-			Assert.AreEqual(list.Get(2), 1);
+			Assert.Equal(list.Get(0), 3);
+			Assert.Equal(list.Get(1), 2);
+			Assert.Equal(list.Get(2), 1);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void AddAtTailTest()
 		{
 			var list = new MyLinkedList();
@@ -64,12 +59,12 @@ namespace LeetCode.Tests
 			list.AddAtTail(2);
 			list.AddAtTail(3);
 
-			Assert.AreEqual(list.Get(0), 1);
-			Assert.AreEqual(list.Get(1), 2);
-			Assert.AreEqual(list.Get(2), 3);
+			Assert.Equal(list.Get(0), 1);
+			Assert.Equal(list.Get(1), 2);
+			Assert.Equal(list.Get(2), 3);
 		}
 
-		[TestMethod]
+		[Fact]
 		public void AddAtIndexTest()
 		{
 
@@ -83,17 +78,17 @@ namespace LeetCode.Tests
 			list.AddAtIndex(10, 7);
 
 
-			Assert.AreEqual(6, list.Get(0));
-			Assert.AreEqual(1, list.Get(1));
-			Assert.AreEqual(5, list.Get(2));
-			Assert.AreEqual(2, list.Get(3));
-			Assert.AreEqual(4, list.Get(4));
-			Assert.AreEqual(3, list.Get(5));
-			Assert.AreEqual(-1, list.Get(10));
-			Assert.AreEqual(-1, list.Get(6));
+			Assert.Equal(6, list.Get(0));
+			Assert.Equal(1, list.Get(1));
+			Assert.Equal(5, list.Get(2));
+			Assert.Equal(2, list.Get(3));
+			Assert.Equal(4, list.Get(4));
+			Assert.Equal(3, list.Get(5));
+			Assert.Equal(-1, list.Get(10));
+			Assert.Equal(-1, list.Get(6));
 		}
 
-		[TestMethod]
+		[Fact]
 		public void DeleteAtIndexTest()
 		{
 			var list = new MyLinkedList();
@@ -110,13 +105,13 @@ namespace LeetCode.Tests
 			list.DeleteAtIndex(3);
 			//{1,2,4}
 
-			Assert.AreEqual(1, list.Get(0));
-			Assert.AreEqual(2, list.Get(1));
-			Assert.AreEqual(4, list.Get(2));
-			Assert.AreEqual(-1, list.Get(3));
+			Assert.Equal(1, list.Get(0));
+			Assert.Equal(2, list.Get(1));
+			Assert.Equal(4, list.Get(2));
+			Assert.Equal(-1, list.Get(3));
 		}
 
-		[TestMethod]
+		[Fact]
 		public void GenerationTest()
 		{
 			var rand = new Random();
@@ -128,12 +123,12 @@ namespace LeetCode.Tests
 			}
 		}
 
-		[DataTestMethod]
-		[DataRow("T T T T")]
-		[DataRow("T T T T H -3 +6 +12 T H")]
-		[DataRow("H --2 +2 +6 -6 +12 -7 -5 T T")]
-		[DataRow("H T +1 -1")]
-		[DataRow("-9 -5 +1 +8 -0 +6 --1 -3 H +11")]
+		[Theory]
+		[InlineData("T T T T")]
+		[InlineData("T T T T H -3 +6 +12 T H")]
+		[InlineData("H --2 +2 +6 -6 +12 -7 -5 T T")]
+		[InlineData("H T +1 -1")]
+		[InlineData("-9 -5 +1 +8 -0 +6 --1 -3 H +11")]
 		public void OperationSequenceTest(string sequence)
 		{
 			ExecuteOperationSequence(sequence);
@@ -200,7 +195,7 @@ namespace LeetCode.Tests
 			if (v > -1)
 				sb2.Append(v + " ");
 
-			Assert.AreEqual(sb1.ToString().Trim(), sb2.ToString().Trim());
+			Assert.Equal(sb1.ToString().Trim(), sb2.ToString().Trim());
 
 		}
 

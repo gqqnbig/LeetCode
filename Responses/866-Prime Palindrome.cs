@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LeetCode.Tests
 {
@@ -97,7 +93,7 @@ namespace LeetCode.Tests
 
 			var p = FormPalindrome(root, nSize);
 			if (p < n)
-				p = FormPalindrome(root+1, nSize);
+				p = FormPalindrome(root + 1, nSize);
 
 			//假设n=111999，p=111111。
 			//root+1后p=112211>n。

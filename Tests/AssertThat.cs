@@ -1,13 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using ExpressionToCodeLib;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LeetCode.Tests
 {
@@ -18,7 +10,7 @@ namespace LeetCode.Tests
 			try
 			{
 				string v = actual.Compile()();
-				Assert.AreEqual(expected, v);
+				Assert.Equal(expected, v);
 			}
 			catch (AssertFailedException e)
 			{
@@ -33,7 +25,7 @@ namespace LeetCode.Tests
 			try
 			{
 				T v = actual.Compile()();
-				Assert.AreEqual(expected, v);
+				Assert.Equal(expected, v);
 			}
 			catch (AssertFailedException e)
 			{
@@ -47,7 +39,7 @@ namespace LeetCode.Tests
 			{
 				T c = expected.Compile()();
 				T v = actual.Compile()();
-				Assert.AreEqual(c, v);
+				Assert.Equal(c, v);
 			}
 			catch (AssertFailedException e)
 			{

@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace LeetCode.Tests
 {
-	[TestClass]
+	
 	public class NextJump1
 	{
 		public static List<int> meanderingArray(List<int> unsorted)
@@ -31,8 +30,8 @@ namespace LeetCode.Tests
 		}
 
 
-		[DataTestMethod]
-		[DataRow(new[] { 1, 3, 5, 2, 6, 7, 0 })]
+		[Theory]
+		[InlineData(new[] { 1, 3, 5, 2, 6, 7, 0 })]
 		public void meanderingArrayTest(int[] input)
 		{
 			meanderingArray(new List<int>(input));
@@ -121,14 +120,14 @@ namespace LeetCode.Tests
 			return max;
 		}
 
-		[DataTestMethod]
-		[DataRow(3, "bcbbc", "b")]
-		[DataRow(2, "aabb", "ab")]
-		[DataRow(1, "aabcbdc", "abc")]
-		[DataRow(0, "abab", "aa")]
+		[Theory]
+		[InlineData(3, "bcbbc", "b")]
+		[InlineData(2, "aabb", "ab")]
+		[InlineData(1, "aabcbdc", "abc")]
+		[InlineData(0, "abab", "aa")]
 		public void maxMovesTest(int expected, string s, string t)
 		{
-			Assert.AreEqual(expected, maxMoves(s, t));
+			Assert.Equal(expected, maxMoves(s, t));
 		}
 
 		public void maxMovesSpeedTest()
@@ -137,7 +136,7 @@ namespace LeetCode.Tests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void maxMovesGenerationTest()
 		{
 			int length = 1000;
